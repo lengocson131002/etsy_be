@@ -1,6 +1,5 @@
 package com.app.commerce.dto.auth.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +14,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class AuthenticationRequest {
     @NotNull
-    private String email;
+    private String username;
     @NotNull
     private String password;
 }

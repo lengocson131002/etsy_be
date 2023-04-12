@@ -19,6 +19,7 @@ public class ApiError {
     public ApiError() {
 
     }
+
     public ApiError(HttpStatus status) {
         this.status = status;
         this.errorCode = status.value();

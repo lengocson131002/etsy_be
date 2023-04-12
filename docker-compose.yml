@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: Aqswde123@
+      POSTGRES_USER: postgresql
+      POSTGRES_DB: shopmanagement
+    volumes:
+      - commerce-data:/var/lib/postgresql/data
+
+  commerce:
+      build: .
+      depends_on:
+        - db
+      environment:
+        DATASOURCE_HOST: db
+        DATASOURCE_PORT: 5432
+        DATASOURCE_DATABASE: shopmanagement
+        DATASOURCE_USERNAME: postgresql
+        DATASOURCE_PASSWORD: Aqswde123@
+      restart: always
+      ports:
+        - "8080:8080"
+volumes:
+  commerce-data:

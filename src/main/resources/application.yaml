@@ -9,9 +9,11 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+        jdbc:
+          time_zone: UTC
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: ${DATASOURCE_URL:jdbc:postgresql://localhost:5432/commerce}
+    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:5432}/${DATASOURCE_DATABASE:commerce}
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:Aqswde123@}
     driverClassName: org.postgresql.Driver

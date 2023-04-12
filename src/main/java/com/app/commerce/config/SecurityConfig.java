@@ -19,12 +19,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**",
+            "/error",
+            "/v3/api-docs/**",
+            "swagger-ui/**",
+            "swagger-ui**",
+            "/webjars/**",
+            "/swagger-resources/**",
+            "/**"
+    };
+    
     private final JwtAuthFilter jwtAuthFilter;
-
     private final AuthenticationProvider authenticationProvider;
-
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
     private final AccessDeniedHandler accessDeniedHandler;
 
     @Bean
@@ -33,9 +41,8 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**", "/error")
+                .requestMatchers(AUTH_WHITELIST)
                 .permitAll()
-                .requestMatchers("api/v1/admin/**").hasAuthority("USER")
                 .anyRequest()
                 .authenticated()
                 .and()
