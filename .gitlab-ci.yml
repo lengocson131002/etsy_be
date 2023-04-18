@@ -1,3 +1,7 @@
+variables:
+  APP_NAME: "shop-be"
+  PORT: "8080"
+  
 cache:
   paths:
     - .gradle/wrapper
