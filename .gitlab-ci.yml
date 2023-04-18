@@ -14,15 +14,12 @@ stages:
   - build and push docker image
   - deploy
 
-before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-
 build:
-  image: openjdk:17
+  image: openjdk:17-alpine
   stage: build jar
   script:
     - chmod +x ./gradlew
-    - ./gradlew build
+    - ./gradlew build -x test
   artifacts:
     paths:
       - build/libs/*.jar    
