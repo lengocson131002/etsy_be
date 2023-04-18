@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @RestControllerAdvice
@@ -46,7 +48,7 @@ public class ApiExceptionHandler {
     protected ResponseEntity<Object> handleInternalException(Exception ex) {
         log.error("Internal error: {}", ex.getMessage());
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        ApiError apiError = new ApiError(status, status.value(), status.getReasonPhrase());
+        ApiError apiError = new ApiError(status, status.value(), status.getReasonPhrase(), Collections.singletonList(ex.getMessage()));
         return ResponseEntity.status(status).body(apiError);
     }
 }

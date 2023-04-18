@@ -5,29 +5,32 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = OrderItem.COLLECTION_NAME)
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table
-public class ProductOption extends BaseEntity {
+@Accessors(chain = true)
+public class OrderItem {
 
-    public final static String COLLECTION_NAME = "product_options";
+    public final static String COLLECTION_NAME = "order_items";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String option;
-    private String value;
+    private String etsyListingId;
+    private String image;
     private BigDecimal price;
+    private String name;
     private Integer quantity;
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "order_id")
+    private Order order;
 }

@@ -16,7 +16,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Role extends BaseEntity {
     public static final String COLLECTION_NAME = "roles";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

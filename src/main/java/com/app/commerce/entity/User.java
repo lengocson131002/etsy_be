@@ -24,7 +24,7 @@ public class User extends BaseEntity implements UserDetails {
     public static final String COLLECTION_NAME = "users";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String username;

@@ -2,11 +2,16 @@ package com.app.commerce.dto.shop.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -16,27 +21,35 @@ import lombok.experimental.Accessors;
 public class DashboardDto {
 
     @JsonProperty("today")
+    @Valid
     private DashboardItemDto today;
 
     @JsonProperty("yesterday")
+    @Valid
     private DashboardItemDto yesterday;
 
     @JsonProperty("last_7")
+    @Valid
     private DashboardItemDto last7;
 
     @JsonProperty("last_30")
+    @Valid
     private DashboardItemDto last30;
 
     @JsonProperty("this_month")
+    @Valid
     private DashboardItemDto thisMonth;
 
     @JsonProperty("this_year")
+    @Valid
     private DashboardItemDto thisYear;
 
     @JsonProperty("last_year")
+    @Valid
     private DashboardItemDto lastYear;
 
     @JsonProperty("all_time")
+    @Valid
     private DashboardItemDto allTime;
 
     @Getter
@@ -45,12 +58,16 @@ public class DashboardDto {
     @NoArgsConstructor
     public static class DashboardItemDto {
         @JsonProperty("visits")
-        private int visits;
+        @PositiveOrZero
+        private Integer visits;
         @JsonProperty("orders")
-        private int orders;
+        @PositiveOrZero
+        private Integer orders;
         @JsonProperty("conversion_rate")
-        private String conversionRate;
+        @PositiveOrZero
+        private Double conversionRate;
         @JsonProperty("revenue")
-        private String revenue;
+        @PositiveOrZero
+        private BigDecimal revenue;
     }
 }
