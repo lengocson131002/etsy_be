@@ -18,7 +18,7 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 build:
-  image: openjdk:11
+  image: openjdk:17
   stage: build jar
   script:
     - chmod +x ./gradlew
