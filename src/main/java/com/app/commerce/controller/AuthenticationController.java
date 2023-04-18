@@ -1,4 +1,4 @@
-package com.app.commerce.controller.auth;
+package com.app.commerce.controller;
 
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.auth.request.AuthenticationRequest;

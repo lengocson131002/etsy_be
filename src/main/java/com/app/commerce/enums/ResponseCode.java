@@ -13,7 +13,13 @@ public enum ResponseCode {
     ROLE_ERROR_NOT_FOUND(302, "Role not found"),
 
     //USER
-    USER_ERROR_EXISTED(402, "Username existed")
+    USER_ERROR_EXISTED(402, "Username existed"),
+
+    //LISTING
+    LISTING_ERROR_NOT_FOUND(501, "Listing not found"),
+
+    //ORDER
+    ORDER_ERROR_NOT_FOUND(601, "Order not found")
 ;
 
     private final int code;

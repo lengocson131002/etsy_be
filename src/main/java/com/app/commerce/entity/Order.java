@@ -53,7 +53,7 @@ public class Order extends BaseEntity {
             orphanRemoval = true)
     private List<OrderItem> items;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;
 

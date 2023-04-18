@@ -1,4 +1,4 @@
-package com.app.commerce.controller.shop;
+package com.app.commerce.controller;
 
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
@@ -14,7 +14,7 @@ import com.app.commerce.entity.Order;
 import com.app.commerce.entity.Listing;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.service.OrderService;
-import com.app.commerce.service.ProductService;
+import com.app.commerce.service.ListingService;
 import com.app.commerce.service.ShopService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ShopController {
 
     private final OrderService orderService;
 
-    private final ProductService productService;
+    private final ListingService productService;
 
     @PutMapping
     public ResponseEntity<StatusResponse> updateShopsData(@Valid @RequestBody UpdateShopRequest request) {
@@ -61,7 +61,7 @@ public class ShopController {
     @GetMapping("/{id}/products")
     public ResponseEntity<PageResponse<Listing, ListingResponse>> getShopProducts(@PathVariable String id, @ParameterObject GetAllListingsRequest request) {
         request.setShopId(id);
-        PageResponse<Listing, ListingResponse> response = productService.getAllProducts(request);
+        PageResponse<Listing, ListingResponse> response = productService.getAllListings(request);
         return ResponseEntity.ok(response);
     }
 }

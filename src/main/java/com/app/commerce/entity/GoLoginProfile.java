@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.OffsetDateTime;
@@ -17,6 +18,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = GoLoginProfile.COLLECTION_NAME)
+@FieldNameConstants
 public class GoLoginProfile {
 
     public final static String COLLECTION_NAME = "go_login_profiles";

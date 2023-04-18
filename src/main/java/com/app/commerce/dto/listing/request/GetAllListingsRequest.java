@@ -17,21 +17,35 @@ import java.util.List;
 @Setter
 public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
-    @JsonIgnore
     private String shopId;
+
+    private String query;
+
+    private String status;
 
     @Override
     public Specification<Listing> getSpecification() {
-        return (root, query, cb) -> {
+        return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (StringUtils.isNotBlank(shopId)) {
                 predicates.add(cb.equal(root.join(Listing.Fields.shop).get(Shop.Fields.id), shopId));
             }
 
-            return !predicates.isEmpty()
-                    ? cb.or(predicates.toArray(new Predicate[0]))
-                    : cb.and();
+            List<Predicate> queryPredicates = new ArrayList<>();
+            if (StringUtils.isNotBlank(query)) {
+                query = query.trim().toLowerCase();
+                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.title)), "%" + query + "%"));
+                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.etsyListingId)), "%" + query + "%"));
+
+                predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
+            }
+
+            if (StringUtils.isNotBlank(status)) {
+                predicates.add(cb.equal(root.get(Listing.Fields.status), status));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
 }

@@ -1,4 +1,4 @@
-package com.app.commerce.controller.staff;
+package com.app.commerce.controller;
 
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.response.UserResponse;

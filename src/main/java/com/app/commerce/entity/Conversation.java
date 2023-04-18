@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 @Entity
 @Table(name = Conversation.COLLECTION_NAME)
@@ -14,6 +15,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Accessors(chain = true)
+@FieldNameConstants
 public class Conversation {
 
     public static final String COLLECTION_NAME = "conversations";
