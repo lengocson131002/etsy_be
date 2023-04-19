@@ -105,6 +105,15 @@ public class ShopMapperImpl implements ShopMapper {
         response.setStatus(shop.getStatus());
         response.setCurrencyCode(shop.getCurrencyCode());
         response.setCurrencySymbol(shop.getCurrencySymbol());
+
+        if (shop.getAllTimeDashboard() != null) {
+            Dashboard dashboard = shop.getAllTimeDashboard();
+            response.setOrderCount(dashboard.getOrders());
+            response.setVisitCount(dashboard.getVisits());
+            response.setConversionRate(dashboard.getConversionRate());
+            response.setRevenue(dashboard.getRevenue());
+        }
+
         return response;
     }
 
@@ -122,16 +131,25 @@ public class ShopMapperImpl implements ShopMapper {
         response.setStatus(shop.getStatus());
         response.setCurrencyCode(shop.getCurrencyCode());
         response.setCurrencySymbol(shop.getCurrencySymbol());
+        response.setProfile(profileMapper.toResponse(shop.getProfile()));
 
-        response.setOrders(shop.getOrders()
-                .stream()
-                .map(orderMapper::toResponse)
-                .collect(Collectors.toList()));
+        if (shop.getAllTimeDashboard() != null) {
+            Dashboard dashboard = shop.getAllTimeDashboard();
+            response.setOrderCount(dashboard.getOrders());
+            response.setVisitCount(dashboard.getVisits());
+            response.setConversionRate(dashboard.getConversionRate());
+            response.setRevenue(dashboard.getRevenue());
+        }
 
-        response.setListings(shop.getListings()
-                .stream()
-                .map(productMapper::toResponse)
-                .collect(Collectors.toList()));
+//        response.setOrders(shop.getOrders()
+//                .stream()
+//                .map(orderMapper::toResponse)
+//                .collect(Collectors.toList()));
+//
+//        response.setListings(shop.getListings()
+//                .stream()
+//                .map(productMapper::toResponse)
+//                .collect(Collectors.toList()));
 
         DashboardResponse dashboard = new DashboardResponse()
                 .setToday(dashboardMapper.toResponse(shop.getTodayDashboard()))
@@ -143,11 +161,11 @@ public class ShopMapperImpl implements ShopMapper {
                 .setLastYear(dashboardMapper.toResponse(shop.getLastYearDashboard()))
                 .setAllTime(dashboardMapper.toResponse(shop.getAllTimeDashboard()));
 
-        response.setConversations(shop.getConversations()
-                .stream()
-                .map(conversationMapper::toResponse)
-                .collect(Collectors.toList())
-        );
+//        response.setConversations(shop.getConversations()
+//                .stream()
+//                .map(conversationMapper::toResponse)
+//                .collect(Collectors.toList())
+//        );
 
         response.setDashboard(dashboard);
         return response;

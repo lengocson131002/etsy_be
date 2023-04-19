@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 @Getter
@@ -21,4 +22,9 @@ public class ShopResponse {
     private OffsetDateTime openedDate;
     private String description;
     private GoLoginProfileResponse profile;
+    private Integer orderCount;
+    private Integer visitCount;
+    private Double conversionRate;
+
+    private BigDecimal revenue;
 }

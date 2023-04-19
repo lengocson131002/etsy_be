@@ -18,3 +18,7 @@ spring:
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:Aqswde123@}
     driverClassName: org.postgresql.Driver
+
+  jackson:
+    mapper:
+      ACCEPT_CASE_INSENSITIVE_ENUMS: true
