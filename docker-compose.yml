@@ -13,7 +13,9 @@ services:
       - commerce-data:/var/lib/postgresql/data
 
   commerce:
-      build: .
+      build:
+        context: .
+        dockerfile: Dockerfile.compose.yaml
       container_name: shopbe
       depends_on:
         - db
