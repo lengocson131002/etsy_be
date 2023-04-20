@@ -16,6 +16,9 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class GoLoginProfileDto {
     @JsonDeserialize(using = TrimString.class)
+    @JsonProperty("id")
+    private String id;
+    @JsonDeserialize(using = TrimString.class)
     @JsonProperty("name")
     private String name;
     @JsonProperty("notes")

@@ -16,6 +16,7 @@ public class ProfileMapperImpl implements ProfileMapper {
             return null;
         }
         return new GoLoginProfile()
+                .setId(dto.getId())
                 .setName(dto.getName())
                 .setCreatedDate(dto.getCreatedDate())
                 .setProxy(dto.getProxy())

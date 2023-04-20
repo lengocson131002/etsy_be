@@ -7,7 +7,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,9 +16,30 @@ import java.util.HashMap;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class DashboardTotalResponse {
-    private Long shopCount;
-    private Long orderCount;
-    private Long visitCount;
-    private Long listingCount;
-    private HashMap<String, BigDecimal> revenues;
+    private Long shopCount = 0L;
+    private Long orderCount = 0L;
+    private Long visitCount = 0L;
+    private Long listingCount = 0L;
+    private List<DashboardRevenueTotalResponse> revenues = new ArrayList<>();
+
+    private List<DashboardShopStatusCountResponse> statusCount = new ArrayList<>();
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DashboardRevenueTotalResponse {
+        private String currencyCode;
+        private String currencySymbol;
+        private BigDecimal value = BigDecimal.ZERO;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DashboardShopStatusCountResponse {
+        private String status;
+        private Integer count = 0;
+    }
 }
