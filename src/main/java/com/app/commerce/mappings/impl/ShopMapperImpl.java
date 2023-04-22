@@ -5,11 +5,14 @@ import com.app.commerce.dto.shop.request.*;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
 import com.app.commerce.entity.Dashboard;
+import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Shop;
+import com.app.commerce.entity.User;
 import com.app.commerce.enums.DashboardType;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
 import com.app.commerce.mappings.*;
+import com.app.commerce.repository.ProfileRepository;
 import com.app.commerce.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +30,10 @@ public class ShopMapperImpl implements ShopMapper {
     private final ListingMapper productMapper;
     private final ConversationMapper conversationMapper;
     private final ProfileMapper profileMapper;
+
+    private final UserMapper userMapper;
+
+    private final ProfileRepository profileRepository;
 
     @Override
     public Shop toEntity(ShopDto dto) {
@@ -46,7 +53,9 @@ public class ShopMapperImpl implements ShopMapper {
 
         // Profile
         if (dto.getProfile() != null) {
-            shop.setProfile(profileMapper.toEntity(dto.getProfile()));
+            GoLoginProfile profile = profileRepository.findByGoLoginProfileId(dto.getProfile().getId())
+                            .orElse(profileMapper.toEntity(dto.getProfile()));
+            shop.setProfile(profile);
         }
 
         // Dashboard
@@ -105,6 +114,7 @@ public class ShopMapperImpl implements ShopMapper {
         response.setStatus(shop.getStatus());
         response.setCurrencyCode(shop.getCurrencyCode());
         response.setCurrencySymbol(shop.getCurrencySymbol());
+        response.setIsTracked(shop.isTracked());
 
         if (shop.getAllTimeDashboard() != null) {
             Dashboard dashboard = shop.getAllTimeDashboard();
@@ -112,6 +122,13 @@ public class ShopMapperImpl implements ShopMapper {
             response.setVisitCount(dashboard.getVisits());
             response.setConversionRate(dashboard.getConversionRate());
             response.setRevenue(dashboard.getRevenue());
+        }
+
+        if (shop.getTrackers() != null) {
+            response.setTrackers(shop.getTrackers()
+                    .stream()
+                    .map(User::getUsername)
+                    .collect(Collectors.toList()));
         }
 
         return response;
@@ -161,11 +178,11 @@ public class ShopMapperImpl implements ShopMapper {
                 .setLastYear(dashboardMapper.toResponse(shop.getLastYearDashboard()))
                 .setAllTime(dashboardMapper.toResponse(shop.getAllTimeDashboard()));
 
-//        response.setConversations(shop.getConversations()
-//                .stream()
-//                .map(conversationMapper::toResponse)
-//                .collect(Collectors.toList())
-//        );
+        response.setTrackers(shop.getTrackers()
+                .stream()
+                .map(userMapper::toResponse)
+                .collect(Collectors.toList())
+        );
 
         response.setDashboard(dashboard);
         return response;

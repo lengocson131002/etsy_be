@@ -2,6 +2,10 @@ package com.app.commerce.repository;
 
 import com.app.commerce.entity.Shop;
 import com.app.commerce.repository.projections.DashboardShopStatusCountProjection;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -18,5 +22,9 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
             "GROUP BY shop.status"
     )
     List<DashboardShopStatusCountProjection> countShopStatus();
+
+    @Override
+    @EntityGraph(attributePaths = {"trackers"})
+    Page<Shop> findAll(Specification<Shop> specification, Pageable pageable);
 
 }

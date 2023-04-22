@@ -1,5 +1,6 @@
 package com.app.commerce.controller;
 
+import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
@@ -16,10 +17,12 @@ import com.app.commerce.entity.Shop;
 import com.app.commerce.service.OrderService;
 import com.app.commerce.service.ListingService;
 import com.app.commerce.service.ShopService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,18 +43,21 @@ public class ShopController {
     }
 
     @GetMapping("")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
         PageResponse<Shop, ShopResponse> response = shopService.getAllShops(request);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<ShopDetailResponse> getShop(@PathVariable String id) {
         ShopDetailResponse response = shopService.getShop(id);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}/orders")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Order, OrderResponse>> getShopOrders(@PathVariable String id, @ParameterObject GetAllOrdersRequest request) {
         request.setShopId(id);
         PageResponse<Order, OrderResponse> response = orderService.getAllOrder(request);
@@ -59,6 +65,7 @@ public class ShopController {
     }
 
     @GetMapping("/{id}/products")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Listing, ListingResponse>> getShopProducts(@PathVariable String id, @ParameterObject GetAllListingsRequest request) {
         request.setShopId(id);
         PageResponse<Listing, ListingResponse> response = productService.getAllListings(request);

@@ -1,11 +1,13 @@
 package com.app.commerce.controller;
 
+import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.entity.Order;
 import com.app.commerce.service.OrderService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
+@SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
 public class OrderController {
 
     private final OrderService orderService;

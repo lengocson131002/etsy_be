@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,8 @@ public class ShopResponse {
     private Integer orderCount;
     private Integer visitCount;
     private Double conversionRate;
-
     private BigDecimal revenue;
+    private Boolean isTracked;
+
+    private List<String> trackers;
 }

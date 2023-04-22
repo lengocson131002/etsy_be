@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class UserDataSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -35,9 +38,8 @@ public class UserDataSeeder implements CommandLineRunner {
                 .setUsername("admin")
                 .setEmail("admin@gmail.com")
                 .setRoles(List.of(adminRole))
-                .setFirstName("admin")
-                .setLastName("admin")
-                .setPassword("$2a$12$2VFbg2IFtFOrc/xuDsjZoOjyA6vn6exuzT4vTae8TtV4bdIszDTPW"); // Aqswde123@
+                .setFullName("admin")
+                .setPassword(passwordEncoder.encode("Aqswde123@")); // Aqswde123@
         userRepository.save(admin);
     }
 }

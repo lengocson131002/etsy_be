@@ -33,6 +33,7 @@ public class ApiExceptionHandler {
         }
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError apiError = new ApiError(status, status.value(), "Invalid argument(s)", errors);
+        log.error("API error: {}", apiError);
         return ResponseEntity.status(status).body(apiError);
     }
 
@@ -41,11 +42,13 @@ public class ApiExceptionHandler {
     protected ResponseEntity<Object> handleApiException(ApiException ex) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError apiError = new ApiError(status, ex.getErrorCode(), ex.getMessage());
+        log.error("API error: {}", apiError);
         return ResponseEntity.status(status).body(apiError);
     }
 
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<Object> handleInternalException(Exception ex) {
+        ex.printStackTrace();
         log.error("Internal error: {}", ex.getMessage());
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ApiError apiError = new ApiError(status, status.value(), status.getReasonPhrase(), Collections.singletonList(ex.getMessage()));

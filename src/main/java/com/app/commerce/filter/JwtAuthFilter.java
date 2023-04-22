@@ -31,7 +31,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final String BEARER = "Bearer ";
     private final UserDetailsService userService;
-    private final String AUTH_REGEX_PATTERN = "\\/api\\/(?:\\S*\\/|)auth(?:\\/\\S*|)";
+//    private final String AUTH_REGEX_PATTERN = "\\/api\\/(?:\\S*\\/|)auth(?:\\/\\S*|)";
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -41,9 +41,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
 
-        if (authHeader == null
-                || !authHeader.startsWith(BEARER)
-                || request.getServletPath().matches(AUTH_REGEX_PATTERN)) {
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
             filterChain.doFilter(request, response);
             return;
         }

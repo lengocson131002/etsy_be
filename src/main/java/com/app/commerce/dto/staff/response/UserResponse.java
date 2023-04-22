@@ -13,11 +13,13 @@ import java.util.List;
 @Accessors(chain = true)
 public class UserResponse {
     private Long id;
+    private String staffId;
     private String username;
     private String phoneNumber;
     private String email;
-    private String firstName;
-    private String lastName;
+    private String fullName;
+    private String address;
+    private String description;
     private OffsetDateTime createdAt;
     private String createdBy;
     private OffsetDateTime updatedAt;

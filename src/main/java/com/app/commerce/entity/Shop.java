@@ -9,7 +9,9 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = Shop.COLLECTION_NAME)
@@ -31,6 +33,14 @@ public class Shop extends BaseEntity {
     private String currencyCode;
     private OffsetDateTime openedDate;
     private String description;
+    private boolean isTracked = false;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    private List<User> trackers;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
@@ -134,5 +144,28 @@ public class Shop extends BaseEntity {
         this.profile = profile;
         this.profile.setShop(this);
         return this;
+    }
+
+    public void addTracker(User staff) {
+        if (this.getTrackers() == null) {
+            this.setTrackers(new ArrayList<>());
+        }
+        if (this.getTrackers().stream().noneMatch(tracker -> Objects.equals(tracker.getId(), staff.getId()))) {
+            this.getTrackers().add(staff);
+        }
+        this.setTracked(true);
+    }
+
+    public void removeTracker(User staff) {
+        if (this.getTrackers() == null) {
+            return;
+        }
+
+        this.trackers.removeIf(tracker -> Objects.equals(tracker.getId(), staff.getId()));
+
+        if (this.getTrackers().isEmpty()) {
+            this.setTracked(false);
+        }
+
     }
 }

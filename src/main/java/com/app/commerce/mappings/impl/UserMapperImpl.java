@@ -6,6 +6,7 @@ import com.app.commerce.entity.User;
 import com.app.commerce.mappings.RoleMapper;
 import com.app.commerce.mappings.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class UserMapperImpl implements UserMapper {
 
     private final RoleMapper roleMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User toEntity(CreateStaffRequest request) {
@@ -23,12 +25,15 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return new User()
+                .setStaffId(request.getStaffId())
                 .setUsername(request.getUsername())
+                .setPassword(passwordEncoder.encode(request.getPassword()))
                 .setPassword(request.getPassword())
                 .setPhoneNumber(request.getPhoneNumber())
                 .setEmail(request.getEmail())
-                .setFirstName(request.getFirstName())
-                .setLastName(request.getLastName());
+                .setFullName(request.getFullName())
+                .setAddress(request.getAddress())
+                .setDescription(request.getDescription());
     }
 
     @Override
@@ -39,11 +44,13 @@ public class UserMapperImpl implements UserMapper {
 
         return new UserResponse()
                 .setId(user.getId())
+                .setStaffId(user.getStaffId())
                 .setUsername(user.getUsername())
                 .setPhoneNumber(user.getPhoneNumber())
                 .setEmail(user.getEmail())
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
+                .setFullName(user.getFullName())
+                .setAddress(user.getAddress())
+                .setDescription(user.getDescription())
                 .setCreatedAt(user.getCreatedAt())
                 .setCreatedBy(user.getCreatedBy())
                 .setUpdatedAt(user.getUpdatedAt())

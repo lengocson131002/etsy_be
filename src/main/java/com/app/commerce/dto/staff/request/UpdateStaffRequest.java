@@ -2,10 +2,7 @@ package com.app.commerce.dto.staff.request;
 
 import com.app.commerce.annotations.TrimString;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -16,19 +13,22 @@ import java.util.List;
 @Getter
 @Setter
 @Accessors(chain = true)
-public class CreateStaffRequest {
+public class UpdateStaffRequest {
     @NotBlank
     @JsonDeserialize(using = TrimString.class)
     private String username;
-    @NotBlank
+
     @Size(min = 8)
     private String password;
     @JsonDeserialize(using = TrimString.class)
     private String staffId;
     @JsonDeserialize(using = TrimString.class)
     private String fullName;
+
     @JsonDeserialize(using = TrimString.class)
     private String phoneNumber;
+
+    @Email
     @JsonDeserialize(using = TrimString.class)
     private String email;
     @JsonDeserialize(using = TrimString.class)

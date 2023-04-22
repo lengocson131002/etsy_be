@@ -25,8 +25,7 @@ public class GetAllProfilesRequest extends BasePageFilterRequest<GoLoginProfile>
             if (StringUtils.isNotBlank(query)) {
                 query = query.trim().toLowerCase();
                 predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.name)), "%" + query + "%"));
-                predicates.add(cb.like(root.join(GoLoginProfile.Fields.shop).get(Shop.Fields.id), "%" + query + "%"));
-                predicates.add(cb.like(root.get(GoLoginProfile.Fields.id), "%" + query + "%"));
+                predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.goLoginProfileId)), "%" + query + "%"));
             }
 
             return !predicates.isEmpty()

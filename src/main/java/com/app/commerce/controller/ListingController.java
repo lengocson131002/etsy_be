@@ -1,11 +1,13 @@
 package com.app.commerce.controller;
 
+import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.entity.Listing;
 import com.app.commerce.service.ListingService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/listings")
+@SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
 @RequiredArgsConstructor
 public class ListingController {
 

@@ -20,7 +20,9 @@ public class GoLoginProfileResponse {
 
     public final static String COLLECTION_NAME = "go_login_profiles";
 
-    private String id;
+    private Long id;
+
+    private String goLoginProfileId;
 
     private String name;
 
@@ -32,5 +34,7 @@ public class GoLoginProfileResponse {
 
     private String folderName;
 
-    private ShopResponse shop;
+    private String shopId;
+
+    private String shopName;
 }

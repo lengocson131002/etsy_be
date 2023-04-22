@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.OffsetDateTime;
@@ -24,7 +25,10 @@ public class GoLoginProfile {
     public final static String COLLECTION_NAME = "go_login_profiles";
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String goLoginProfileId;
 
     private String name;
 
@@ -36,7 +40,6 @@ public class GoLoginProfile {
 
     private String folderName;
 
-    @OneToOne
-    @JoinColumn(name = "shop_id")
+    @OneToOne(mappedBy = "profile")
     private Shop shop;
 }

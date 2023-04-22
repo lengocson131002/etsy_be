@@ -36,6 +36,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public PageResponse<Shop, ShopResponse> getAllShops(GetAllShopRequest request) {
         Page<Shop> pageResult = shopRepository.findAll(request.getSpecification(), request.getPageable());
         return new PageResponse<>(pageResult, shopMapper::toResponse);
@@ -47,6 +48,5 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
         return shopMapper.toDetailResponse(shop);
     }
-
 
 }

@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDetailResponse getOrder(Long id) {
         Order order = orderRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiException(ResponseCode.USER_ERROR_EXISTED));
+                .orElseThrow(() -> new ApiException(ResponseCode.ORDER_ERROR_NOT_FOUND));
         return orderMapper.toDetailResponse(order);
     }
 }
