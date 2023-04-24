@@ -6,8 +6,12 @@ import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.entity.Order;
 
+import java.util.List;
+
 public interface OrderService {
     PageResponse<Order, OrderResponse> getAllOrder(GetAllOrdersRequest request);
 
     OrderDetailResponse getOrder(Long id);
+
+    List<String> getAllStatuses();
 }

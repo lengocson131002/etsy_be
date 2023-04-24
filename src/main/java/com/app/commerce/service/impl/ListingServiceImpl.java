@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ListingServiceImpl implements ListingService {
@@ -36,5 +38,10 @@ public class ListingServiceImpl implements ListingService {
                 .orElseThrow(() -> new ApiException(ResponseCode.LISTING_ERROR_NOT_FOUND));
 
         return listingMapper.toDetailResponse(listing);
+    }
+
+    @Override
+    public List<String> getAllStatuses() {
+        return listingRepository.findAllStatuses();
     }
 }

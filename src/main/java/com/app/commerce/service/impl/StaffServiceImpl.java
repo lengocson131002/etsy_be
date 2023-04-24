@@ -10,6 +10,7 @@ import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
+import com.app.commerce.mappings.ShopMapper;
 import com.app.commerce.mappings.UserMapper;
 import com.app.commerce.repository.RoleRepository;
 import com.app.commerce.repository.ShopRepository;
@@ -23,8 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +36,7 @@ public class StaffServiceImpl implements StaffService {
     private final String ROLE_ADMIN_CODE = "ROLE_ADMIN";
     private final UserMapper userMapper;
 
+    private final ShopMapper shopMapper;
     private final ShopRepository shopRepository;
 
     @Override
@@ -82,7 +83,15 @@ public class StaffServiceImpl implements StaffService {
     public UserResponse getStaff(Long id) {
         User staff = userRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND));
-        return userMapper.toResponse(staff);
+        List<Shop> trackings = shopRepository.findByTrackersId(staff.getId());
+
+        UserResponse response = userMapper.toResponse(staff);
+        response.setTrackings(trackings
+                .stream()
+                .map(shopMapper::toResponse)
+                .collect(Collectors.toList()));
+
+        return response;
     }
 
     @Override

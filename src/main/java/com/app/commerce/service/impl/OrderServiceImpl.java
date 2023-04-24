@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -34,5 +36,10 @@ public class OrderServiceImpl implements OrderService {
                 .findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.ORDER_ERROR_NOT_FOUND));
         return orderMapper.toDetailResponse(order);
+    }
+
+    @Override
+    public List<String> getAllStatuses() {
+        return orderRepository.findAllStatuses();
     }
 }

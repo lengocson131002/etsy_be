@@ -21,19 +21,28 @@ import java.util.List;
 public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
     private String query;
 
+    private String status;
+
     private Long trackerId;
 
     @Override
     public Specification<Shop> getSpecification() {
-        return (root, query, cb) -> {
+        return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (StringUtils.isNotBlank(this.query)) {
-                this.query = this.query.trim().toLowerCase();
-                predicates.add(cb.like(cb.lower(root.get(Shop.Fields.name)), "%" + this.query + "%"));
+
+            if (StringUtils.isNotBlank(status)) {
+                predicates.add(cb.equal(cb.lower(root.get(Shop.Fields.status)), status.trim()));
             }
 
             if (trackerId != null) {
                 predicates.add(cb.equal(root.join(Shop.Fields.trackers).get(User.Fields.id), trackerId));
+            }
+
+            List<Predicate> queryPredicates = new ArrayList<>();
+            if (StringUtils.isNotBlank(query)) {
+                query = query.trim().toLowerCase();
+                queryPredicates.add(cb.like(cb.lower(root.get(Shop.Fields.name)), "%" + query + "%"));
+                predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
 
             return  cb.and(predicates.toArray(new Predicate[0]));

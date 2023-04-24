@@ -1,5 +1,6 @@
 package com.app.commerce.service.impl;
 
+import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.shop.request.*;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
@@ -130,6 +131,12 @@ public class ShopServiceImpl implements ShopService {
         }
 
         shopRepository.save(shop);
+    }
+
+    @Override
+    public List<String> getAllShopStatuses() {
+        List<String> statuses = shopRepository.findAllStatuses();
+        return statuses;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.app.commerce.controller;
 
 import com.app.commerce.config.OpenApiConfig;
+import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/listings")
 @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
@@ -29,6 +32,12 @@ public class ListingController {
     public ResponseEntity<PageResponse<Listing, ListingResponse>> getAllListing(@Valid @ParameterObject GetAllListingsRequest request) {
         PageResponse<Listing, ListingResponse> response = listingService.getAllListings(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/statuses")
+    public ResponseEntity<ListResponse<String>> getAllListingStatuses() {
+        List<String> statues = listingService.getAllStatuses();
+        return ResponseEntity.ok(new ListResponse<>(statues));
     }
 
     @GetMapping("{id}")

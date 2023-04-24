@@ -36,11 +36,12 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
 
             List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
-                query = query.trim().toLowerCase();
-                queryPredicates.add(cb.like(root.get(Order.Fields.orderName), "%" + query + "%"));
-                queryPredicates.add(cb.like(root.get(Order.Fields.shippingAddress), "%" + query + "%"));
-                queryPredicates.add(cb.like(root.get(Order.Fields.shippingCustomerName), "%" + query + "%"));
-
+                String queryPattern = "%" + query.trim().toLowerCase() + "%";
+                queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.etsyOrderId)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.orderName)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingAddress)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingCustomerName)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.id)), queryPattern));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
 

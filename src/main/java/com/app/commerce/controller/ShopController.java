@@ -1,6 +1,7 @@
 package com.app.commerce.controller;
 
 import com.app.commerce.config.OpenApiConfig;
+import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
@@ -8,7 +9,6 @@ import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.dto.shop.request.GetAllShopRequest;
-import com.app.commerce.dto.shop.request.ShopDto;
 import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
@@ -25,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/shops")
@@ -48,6 +50,13 @@ public class ShopController {
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
         PageResponse<Shop, ShopResponse> response = shopService.getAllShops(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/statuses")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<ListResponse<String>> getAllShopStatuses() {
+        List<String> response = shopService.getAllShopStatuses();
+        return ResponseEntity.ok(new ListResponse<>(response));
     }
 
     @PutMapping("/{id}")

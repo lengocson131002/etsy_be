@@ -27,4 +27,10 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
     @EntityGraph(attributePaths = {"trackers"})
     Page<Shop> findAll(Specification<Shop> specification, Pageable pageable);
 
+    @Query("SELECT distinct (shop.status) " +
+            "FROM Shop shop " +
+            "WHERE shop.status IS NOT NULL")
+    List<String> findAllStatuses();
+
+    List<Shop> findByTrackersId(Long trackerId);
 }

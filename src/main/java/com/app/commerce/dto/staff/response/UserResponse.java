@@ -1,6 +1,7 @@
 package com.app.commerce.dto.staff.response;
 
 import com.app.commerce.dto.role.response.RoleResponse;
+import com.app.commerce.dto.shop.response.ShopResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,4 +26,5 @@ public class UserResponse {
     private OffsetDateTime updatedAt;
     private String updatedBy;
     private List<RoleResponse> roles;
+    private List<ShopResponse> trackings;
 }
