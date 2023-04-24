@@ -24,6 +24,7 @@ public class ShopInfoDto {
 
     @JsonProperty("name")
     @JsonDeserialize(using = TrimString.class)
+    @NotNull
     private String name;
 
     @JsonProperty("status")

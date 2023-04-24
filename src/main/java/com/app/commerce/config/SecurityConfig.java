@@ -51,19 +51,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        APIKeyAuthFilter filter = new APIKeyAuthFilter(principalRequestHeader);
-        filter.setAuthenticationManager(new AuthenticationManager() {
-            @Override
-            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-                String principal = (String) authentication.getPrincipal();
-                if (!principalRequestValue.equals(principal))
-                {
-                    throw new BadCredentialsException("The API key was not found or not the expected value.");
-                }
-                authentication.setAuthenticated(true);
-                return authentication;
-            }
-        });
+//        APIKeyAuthFilter filter = new APIKeyAuthFilter(principalRequestHeader);
+//        filter.setAuthenticationManager(new AuthenticationManager() {
+//            @Override
+//            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//                String principal = (String) authentication.getPrincipal();
+//                if (!principalRequestValue.equals(principal))
+//                {
+//                    throw new BadCredentialsException("The API key was not found or not the expected value.");
+//                }
+//                authentication.setAuthenticated(true);
+//                return authentication;
+//            }
+//        });
 
         http
                 .cors().configurationSource(corsConfigurationSource())
@@ -73,7 +73,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(AUTH_WHITELIST)
                 .permitAll()
-                .requestMatchers(HttpMethod.PUT, "/api/v1/shops")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/shops/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -83,7 +83,6 @@ public class SecurityConfig {
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler)
                 .and()
-//                .addFilterBefore(new SimpleCORSFilter(), WebAsyncManagerIntegrationFilter.class)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

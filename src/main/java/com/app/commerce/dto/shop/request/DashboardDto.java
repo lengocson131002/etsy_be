@@ -1,9 +1,8 @@
 package com.app.commerce.dto.shop.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,34 +21,42 @@ public class DashboardDto {
 
     @JsonProperty("today")
     @Valid
+    @NotNull
     private DashboardItemDto today;
 
     @JsonProperty("yesterday")
     @Valid
+    @NotNull
     private DashboardItemDto yesterday;
 
     @JsonProperty("last_7")
     @Valid
+    @NotNull
     private DashboardItemDto last7;
 
     @JsonProperty("last_30")
     @Valid
+    @NotNull
     private DashboardItemDto last30;
 
     @JsonProperty("this_month")
     @Valid
+    @NotNull
     private DashboardItemDto thisMonth;
 
     @JsonProperty("this_year")
     @Valid
+    @NotNull
     private DashboardItemDto thisYear;
 
     @JsonProperty("last_year")
     @Valid
+    @NotNull
     private DashboardItemDto lastYear;
 
     @JsonProperty("all_time")
     @Valid
+    @NotNull
     private DashboardItemDto allTime;
 
     @Getter

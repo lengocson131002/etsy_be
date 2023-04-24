@@ -8,6 +8,8 @@ import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.dto.shop.request.GetAllShopRequest;
+import com.app.commerce.dto.shop.request.ShopDto;
+import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
@@ -22,7 +24,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,7 +38,7 @@ public class ShopController {
     private final ListingService productService;
 
     @PutMapping
-    public ResponseEntity<StatusResponse> updateShopsData(@Valid @RequestBody UpdateShopRequest request) {
+    public ResponseEntity<StatusResponse> updateShopsData(@Valid @RequestBody UpdateListShopsRequest request) {
         shopService.updateShopData(request);
         return ResponseEntity.ok(new StatusResponse(true));
     }
@@ -47,6 +48,13 @@ public class ShopController {
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
         PageResponse<Shop, ShopResponse> response = shopService.getAllShops(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<StatusResponse> updateShop(@PathVariable String id, @RequestBody UpdateShopRequest request) {
+        shopService.updateShopData(id, request);
+        return ResponseEntity.ok(new StatusResponse(true));
     }
 
     @GetMapping("/{id}")

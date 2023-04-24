@@ -6,7 +6,7 @@ public enum ResponseCode {
 
     //Shop
     SHOP_ERROR_NOT_FOUND(202, "Shop not found"),
-    SHOP_ERROR_INVALID_INFO(203, "Invalid shop information"),
+    SHOP_ERROR_INVALID_INFO(203, "Invalid shop information. Shop information is required"),
 
 
     //Role

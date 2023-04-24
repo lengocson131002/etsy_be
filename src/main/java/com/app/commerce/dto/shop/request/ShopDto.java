@@ -18,22 +18,20 @@ import java.util.List;
 @Accessors(chain = true)
 public class ShopDto {
     @JsonProperty("shop")
-    @NotNull
     @Valid
+    @NotNull
     private ShopInfoDto shop;
 
     @JsonProperty("profile")
-    @NotNull
     @Valid
+    @NotNull
     private GoLoginProfileDto profile;
 
     @JsonProperty("dashboard")
-    @NotNull
     @Valid
     private DashboardDto dashboard;
 
     @JsonProperty("listings")
-    @NotNull
     @Valid
     private List<ListingDto> listings;
 
@@ -42,7 +40,6 @@ public class ShopDto {
     private List<ConversationDto> conversations;
 
     @JsonProperty("orders")
-    @NotNull
     @Valid
     private List<OrderDto> orders;
 }

@@ -96,6 +96,7 @@ public class ShopMapperImpl implements ShopMapper {
                     .map(conversationMapper::toEntity)
                     .collect(Collectors.toList()));
         }
+
         return shop;
     }
 
