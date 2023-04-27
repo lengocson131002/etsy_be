@@ -2,6 +2,7 @@ package com.app.commerce.dto.profile.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.GoLoginProfile;
+import com.app.commerce.entity.Listing;
 import com.app.commerce.entity.Shop;
 import jakarta.persistence.criteria.Predicate;
 import lombok.Getter;
@@ -23,9 +24,11 @@ public class GetAllProfilesRequest extends BasePageFilterRequest<GoLoginProfile>
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
-                query = query.trim().toLowerCase();
-                predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.name)), "%" + query + "%"));
-                predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.goLoginProfileId)), "%" + query + "%"));
+                String queryPattern = "%" + query.trim().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(root.join(GoLoginProfile.Fields.shop).get(Shop.Fields.id)), queryPattern));
+                predicates.add(cb.like(cb.lower(root.join(GoLoginProfile.Fields.shop).get(Shop.Fields.name)), queryPattern));
+                predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.name)), queryPattern));
+                predicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.goLoginProfileId)), queryPattern));
             }
 
             return !predicates.isEmpty()

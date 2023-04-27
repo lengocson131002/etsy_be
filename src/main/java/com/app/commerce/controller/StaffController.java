@@ -13,6 +13,7 @@ import com.app.commerce.service.StaffService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,11 @@ public class StaffController {
     @GetMapping
     public ResponseEntity<PageResponse<User, UserResponse>> getAllStaffs(@Valid @ParameterObject GetAllStaffRequest request) {
         request.setExceptedRoles(List.of("ROLE_ADMIN".toUpperCase()));
-        request.setSortBy(BaseEntity.Fields.createdAt);
-        request.setSortDir(Sort.Direction.DESC);
+        if (StringUtils.isEmpty(request.getSortBy())) {
+            request.setSortBy(BaseEntity.Fields.createdAt);
+            request.setSortDir(Sort.Direction.DESC);
+        }
+
         PageResponse<User, UserResponse> response = staffService.getAllStaffs(request);
         return ResponseEntity.ok(response);
     }

@@ -4,6 +4,7 @@ import com.app.commerce.dto.profile.request.CreateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.dto.shop.request.GoLoginProfileDto;
 import com.app.commerce.entity.GoLoginProfile;
+import com.app.commerce.entity.Shop;
 import com.app.commerce.mappings.ProfileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,9 +57,10 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .setNotes(profile.getNotes())
                 .setFolderName(profile.getFolderName());
 
-        if (profile.getShop() != null) {
-            response.setShopId(profile.getShop().getId());
-            response.setShopName(profile.getShop().getName());
+        Shop shop = profile.getShop();
+        if (shop != null) {
+            response.setShopId(shop.getId());
+            response.setShopName(shop.getName());
         }
 
         return response;

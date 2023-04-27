@@ -35,8 +35,9 @@ public class GetAllConversationsRequest extends BasePageFilterRequest<Conversati
 
             List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
-                query = query.trim().toLowerCase();
-                queryPredicates.add(cb.like(cb.lower(root.get(Conversation.Fields.customerName)), "%" + query + "%"));
+                String queryPattern = "%" + query.trim().toLowerCase() + "%";
+                queryPredicates.add(cb.like(cb.lower(root.get(Conversation.Fields.customerName)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.join(Conversation.Fields.shop).get(Shop.Fields.name)), queryPattern));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
 

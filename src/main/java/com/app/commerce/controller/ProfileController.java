@@ -12,6 +12,7 @@ import com.app.commerce.service.ProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,10 @@ public class ProfileController {
 
     @GetMapping
     public ResponseEntity<PageResponse<GoLoginProfile, GoLoginProfileResponse>> getAllProfiles(@Valid @ParameterObject GetAllProfilesRequest request) {
-        request.setSortBy(GoLoginProfile.Fields.createdDate);
-        request.setSortDir(Sort.Direction.DESC);
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy(GoLoginProfile.Fields.createdDate);
+            request.setSortDir(Sort.Direction.DESC);
+        }
         PageResponse<GoLoginProfile, GoLoginProfileResponse> response = profileService.getAllProfiles(request);
         return ResponseEntity.ok(response);
     }

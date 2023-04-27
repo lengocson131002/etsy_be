@@ -21,4 +21,8 @@ public class ListingResponse {
     private Integer allTimeRevenue;
     private Integer allTimeRenewals;
     private Integer stock;
+    private String shopId;
+    private String shopName;
+    private String currencyCode;
+    private String currencySymbol;
 }

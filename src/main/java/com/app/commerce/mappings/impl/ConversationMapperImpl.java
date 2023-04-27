@@ -28,6 +28,8 @@ public class ConversationMapperImpl implements ConversationMapper {
                 .setId(conversation.getId())
                 .setCustomerName(conversation.getCustomerName())
                 .setUnreadCount(conversation.getUnreadCount())
-                .setMessageTime(conversation.getMessageTime());
+                .setMessageTime(conversation.getMessageTime())
+                .setShopId(conversation.getShop() != null ? conversation.getShop().getId() : null)
+                .setShopName(conversation.getShop() != null ? conversation.getShop().getName() : null);
     }
 }

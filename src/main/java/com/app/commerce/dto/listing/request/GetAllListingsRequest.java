@@ -2,6 +2,7 @@ package com.app.commerce.dto.listing.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Listing;
+import com.app.commerce.entity.Order;
 import com.app.commerce.entity.Shop;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.criteria.Predicate;
@@ -34,9 +35,11 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
             List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
-                query = query.trim().toLowerCase();
-                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.title)), "%" + query + "%"));
-                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.etsyListingId)), "%" + query + "%"));
+                String queryPattern = "%" + query.trim().toLowerCase() + "%";
+                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.title)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.join(Listing.Fields.shop).get(Shop.Fields.id)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.join(Listing.Fields.shop).get(Shop.Fields.name)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.etsyListingId)), queryPattern));
 
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }

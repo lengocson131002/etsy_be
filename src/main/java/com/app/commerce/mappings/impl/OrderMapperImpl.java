@@ -6,6 +6,7 @@ import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.dto.shop.request.OrderDto;
 import com.app.commerce.entity.Order;
 import com.app.commerce.entity.OrderItem;
+import com.app.commerce.entity.Shop;
 import com.app.commerce.mappings.OrderMapper;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +95,15 @@ public class OrderMapperImpl implements OrderMapper {
         response.setEstimateDelivery(order.getEstimateDelivery());
         response.setTrackingNumber(order.getTrackingNumber());
         response.setMarkAsGift(order.getMarkAsGift());
+
+        Shop shop = order.getShop();
+        if (shop != null) {
+            response.setShopId(shop.getId());
+            response.setShopName(shop.getName());
+            response.setCurrencyCode(shop.getCurrencyCode());
+            response.setCurrencySymbol(shop.getCurrencySymbol());
+        }
+
         return response;
     }
 
@@ -129,6 +139,14 @@ public class OrderMapperImpl implements OrderMapper {
                 .stream()
                 .map(this::toOrderItemResponse)
                 .collect(Collectors.toList()));
+
+        Shop shop = order.getShop();
+        if (shop != null) {
+            response.setShopId(shop.getId());
+            response.setShopName(shop.getName());
+            response.setCurrencyCode(shop.getCurrencyCode());
+            response.setCurrencySymbol(shop.getCurrencySymbol());
+        }
 
         return response;
     }

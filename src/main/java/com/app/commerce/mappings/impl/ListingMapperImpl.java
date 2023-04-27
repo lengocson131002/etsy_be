@@ -4,6 +4,7 @@ import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.dto.shop.request.ListingDto;
 import com.app.commerce.entity.Listing;
+import com.app.commerce.entity.Shop;
 import com.app.commerce.mappings.ListingMapper;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +52,14 @@ public class ListingMapperImpl implements ListingMapper {
         response.setAllTimeSales(listing.getAllTimeSales());
         response.setAllTimeRevenue(listing.getAllTimeRevenue());
         response.setAllTimeRenewals(listing.getAllTimeSales());
+
+        Shop shop = listing.getShop();
+        if (shop != null) {
+            response.setShopId(shop.getId());
+            response.setShopName(shop.getName());
+            response.setCurrencyCode(shop.getCurrencyCode());
+            response.setCurrencySymbol(shop.getCurrencySymbol());
+        }
 
         return response;
     }

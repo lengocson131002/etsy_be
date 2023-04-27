@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
 import java.util.function.Function;
@@ -20,6 +21,8 @@ public class PageResponse<TEntity, TResponse> {
     private int pageNum;
     private int pageSize;
     private long total;
+    private String sortBy;
+    private Sort.Direction sortDir;
     private Collection<TResponse> data;
 
     public PageResponse(Page<TEntity> page, Function<TEntity, TResponse> mapper) {
@@ -30,6 +33,14 @@ public class PageResponse<TEntity, TResponse> {
                 .stream()
                 .map(mapper)
                 .collect(Collectors.toList());
+
+        if (!page.getSort().isUnsorted() && !page.getSort().isEmpty()) {
+            page.getSort().stream().findFirst().ifPresent(sortItem -> {
+                sortBy = sortItem.getProperty();
+                sortDir = sortItem.getDirection();
+            });
+
+        }
     }
 
 }

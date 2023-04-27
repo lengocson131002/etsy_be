@@ -37,4 +37,8 @@ public class OrderResponse {
     private String estimateDelivery;
     private String trackingNumber;
     private Boolean markAsGift;
+    private String shopId;
+    private String shopName;
+    private String currencyCode;
+    private String currencySymbol;
 }

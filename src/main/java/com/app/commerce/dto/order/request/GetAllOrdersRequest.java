@@ -42,6 +42,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingAddress)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingCustomerName)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.id)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.name)), queryPattern));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
 

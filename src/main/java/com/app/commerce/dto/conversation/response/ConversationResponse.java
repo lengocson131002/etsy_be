@@ -19,4 +19,8 @@ public class ConversationResponse {
     private Integer unreadCount;
 
     private String messageTime;
+
+    private String shopId;
+
+    private String shopName;
 }
