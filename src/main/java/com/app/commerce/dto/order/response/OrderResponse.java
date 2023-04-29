@@ -16,6 +16,7 @@ import java.time.OffsetDateTime;
 @Accessors(chain = true)
 public class OrderResponse {
     private Long id;
+    private String image;
     private String etsyOrderId;
     private String progressStep;
     private Integer itemCount;
@@ -28,6 +29,7 @@ public class OrderResponse {
     private BigDecimal adjustedTotal;
     private BigDecimal tax;
     private String orderName;
+    private String orderEmail;
     private OffsetDateTime orderTime;
     private String shippingCustomerName;
     private BigDecimal shippingPrice;

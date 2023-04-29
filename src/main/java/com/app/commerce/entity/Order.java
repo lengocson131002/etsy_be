@@ -37,6 +37,7 @@ public class Order extends BaseEntity {
     private BigDecimal adjustedTotal;
     private BigDecimal tax;
     private String orderName;
+    private String orderEmail;
     private OffsetDateTime orderTime;
     private String shippingCustomerName;
     private BigDecimal shippingPrice;

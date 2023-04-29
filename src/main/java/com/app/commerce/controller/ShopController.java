@@ -13,6 +13,7 @@ import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
+import com.app.commerce.entity.BaseEntity;
 import com.app.commerce.entity.Order;
 import com.app.commerce.entity.Listing;
 import com.app.commerce.entity.Shop;
@@ -22,6 +23,7 @@ import com.app.commerce.service.ShopService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +50,10 @@ public class ShopController {
     @GetMapping("")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy(Shop.Fields.openedDate);
+        }
+
         PageResponse<Shop, ShopResponse> response = shopService.getAllShops(request);
         return ResponseEntity.ok(response);
     }

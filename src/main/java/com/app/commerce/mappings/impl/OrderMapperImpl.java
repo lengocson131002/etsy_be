@@ -39,6 +39,7 @@ public class OrderMapperImpl implements OrderMapper {
                 .setEstimateDelivery(dto.getEstimateDelivery())
                 .setTrackingNumber(dto.getTrackingNumber())
                 .setMarkAsGift(dto.getMarkAsGift())
+                .setOrderEmail(dto.getOrderEmail())
                 .setItems(dto.getItems().stream()
                         .map(this::toOrderItemEntity)
                         .collect(Collectors.toList()));
@@ -74,6 +75,9 @@ public class OrderMapperImpl implements OrderMapper {
         }
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
+        response.setImage(!order.getItems().isEmpty()
+                ? order.getItems().get(0).getImage()
+                : null);
         response.setEtsyOrderId(order.getEtsyOrderId());
         response.setProgressStep(order.getProgressStep());
         response.setItemCount(order.getItemCount());
@@ -95,6 +99,7 @@ public class OrderMapperImpl implements OrderMapper {
         response.setEstimateDelivery(order.getEstimateDelivery());
         response.setTrackingNumber(order.getTrackingNumber());
         response.setMarkAsGift(order.getMarkAsGift());
+        response.setOrderEmail(order.getOrderEmail());
 
         Shop shop = order.getShop();
         if (shop != null) {
@@ -114,6 +119,9 @@ public class OrderMapperImpl implements OrderMapper {
         }
         OrderDetailResponse response = new OrderDetailResponse();
         response.setId(order.getId());
+        response.setImage(!order.getItems().isEmpty()
+                ? order.getItems().get(0).getImage()
+                : null);
         response.setEtsyOrderId(order.getEtsyOrderId());
         response.setProgressStep(order.getProgressStep());
         response.setItemCount(order.getItemCount());
@@ -135,6 +143,7 @@ public class OrderMapperImpl implements OrderMapper {
         response.setEstimateDelivery(order.getEstimateDelivery());
         response.setTrackingNumber(order.getTrackingNumber());
         response.setMarkAsGift(order.getMarkAsGift());
+        response.setOrderEmail(order.getOrderEmail());
         response.setItems(order.getItems()
                 .stream()
                 .map(this::toOrderItemResponse)

@@ -54,6 +54,11 @@ public class OrderDto {
     @JsonProperty("order_name")
     @JsonDeserialize(using = TrimString.class)
     private String orderName;
+
+    @JsonProperty("order_email")
+    @JsonDeserialize(using = TrimString.class)
+    private String orderEmail;
+
     @JsonProperty("order_time")
     private OffsetDateTime orderTime;
     @JsonProperty("shipping_customer_name")
