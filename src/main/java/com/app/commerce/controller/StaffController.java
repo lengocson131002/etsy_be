@@ -1,5 +1,6 @@
 package com.app.commerce.controller;
 
+import com.app.commerce.config.BaseConstants;
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
@@ -32,7 +33,7 @@ public class StaffController {
 
     @GetMapping
     public ResponseEntity<PageResponse<User, UserResponse>> getAllStaffs(@Valid @ParameterObject GetAllStaffRequest request) {
-        request.setExceptedRoles(List.of("ROLE_ADMIN".toUpperCase()));
+//        request.setExceptedRoles(List.of(BaseConstants.ROLE_ADMIN_CODE.toUpperCase()));
         if (StringUtils.isEmpty(request.getSortBy())) {
             request.setSortBy(BaseEntity.Fields.createdAt);
             request.setSortDir(Sort.Direction.DESC);

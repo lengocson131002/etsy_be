@@ -23,7 +23,7 @@ public class RoleServiceImpl implements RoleService {
     public ListResponse<RoleResponse> getAllRoles(boolean excludeAdmin) {
         List<Role> roles = roleRepository.findAll();
         return new ListResponse<>(roles.stream()
-                .filter(role -> excludeAdmin && !BaseConstants.ROLE_ADMIN_CODE.equals(role.getCode()))
+                .filter(role -> !excludeAdmin || !BaseConstants.ROLE_ADMIN_CODE.equals(role.getCode()))
                 .map(roleMapper::toResponse)
                 .collect(Collectors.toList()));
     }

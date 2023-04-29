@@ -35,6 +35,16 @@ public enum ResponseCode {
 
     PROFILE_ERROR_REFERENCED(704, "Profile is currently reference by a shop"),
 
+    //TEAM
+    TEAM_ERROR_EXISTS_NAME(801, "Team name existed"),
+
+    TEAM_ERROR_EXISTS_CODE(802, "Team code existed"),
+
+    TEAM_ERROR_NOT_FOUND(803, "Team not found"),
+
+    TEAM_ERROR_STAFF_ASSIGNED(804, "staff was assigned"),
+
+    TEAM_ERROR_SHOP_ASSIGNED(805, "Shop was assigned"),
 
 
 ;

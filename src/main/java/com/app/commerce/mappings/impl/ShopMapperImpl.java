@@ -116,6 +116,7 @@ public class ShopMapperImpl implements ShopMapper {
         response.setCurrencyCode(shop.getCurrencyCode());
         response.setCurrencySymbol(shop.getCurrencySymbol());
         response.setIsTracked(shop.isTracked());
+        response.setLastSyncAt(shop.getLastSyncAt());
 
         if (shop.getAllTimeDashboard() != null) {
             Dashboard dashboard = shop.getAllTimeDashboard();
@@ -130,6 +131,11 @@ public class ShopMapperImpl implements ShopMapper {
                     .stream()
                     .map(User::getUsername)
                     .collect(Collectors.toList()));
+        }
+
+        if (shop.getTeam() != null) {
+            response.setTeamId(shop.getTeam().getId());
+            response.setTeamName(shop.getTeam().getName());
         }
 
         return response;
@@ -150,6 +156,7 @@ public class ShopMapperImpl implements ShopMapper {
         response.setCurrencyCode(shop.getCurrencyCode());
         response.setCurrencySymbol(shop.getCurrencySymbol());
         response.setProfile(profileMapper.toResponse(shop.getProfile()));
+        response.setLastSyncAt(shop.getLastSyncAt());
 
         if (shop.getAllTimeDashboard() != null) {
             Dashboard dashboard = shop.getAllTimeDashboard();
@@ -184,6 +191,11 @@ public class ShopMapperImpl implements ShopMapper {
                 .map(userMapper::toResponse)
                 .collect(Collectors.toList())
         );
+
+        if (shop.getTeam() != null) {
+            response.setTeamId(shop.getTeam().getId());
+            response.setTeamName(shop.getTeam().getName());
+        }
 
         response.setDashboard(dashboard);
         return response;

@@ -25,6 +25,8 @@ public class UserResponse {
     private String createdBy;
     private OffsetDateTime updatedAt;
     private String updatedBy;
+    private Long teamId;
+    private String teamName;
     private List<RoleResponse> roles;
     private List<ShopResponse> trackings;
 }

@@ -28,6 +28,8 @@ public class ShopResponse {
     private Double conversionRate;
     private BigDecimal revenue;
     private Boolean isTracked;
-
+    private Long teamId;
+    private String teamName;
     private List<String> trackers;
+    private OffsetDateTime lastSyncAt;
 }

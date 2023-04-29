@@ -2,6 +2,7 @@ package com.app.commerce.mappings.impl;
 
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.response.UserResponse;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.mappings.RoleMapper;
 import com.app.commerce.mappings.UserMapper;
@@ -42,7 +43,7 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        return new UserResponse()
+        UserResponse response = new UserResponse()
                 .setId(user.getId())
                 .setStaffId(user.getStaffId())
                 .setUsername(user.getUsername())
@@ -58,5 +59,13 @@ public class UserMapperImpl implements UserMapper {
                 .setRoles(user.getRoles().stream()
                         .map(roleMapper::toResponse)
                         .collect(Collectors.toList()));
+
+        Team team = user.getTeam();
+        if (team != null) {
+            response.setTeamId(team.getId());
+            response.setTeamName(team.getName());
+        }
+
+        return response;
     }
 }

@@ -31,6 +31,11 @@ public class ShopDetailResponse {
     private Double conversionRate;
     private BigDecimal revenue;
     private Boolean isTracked;
+
+    private Long teamId;
+    private String teamName;
+    private OffsetDateTime lastSyncAt;
+
     DashboardResponse dashboard;
 
     List<UserResponse> trackers;

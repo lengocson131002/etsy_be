@@ -34,6 +34,11 @@ public class Shop extends BaseEntity {
     private OffsetDateTime openedDate;
     private String description;
     private boolean isTracked = false;
+    private OffsetDateTime lastSyncAt;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

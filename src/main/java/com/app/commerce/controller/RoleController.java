@@ -21,7 +21,7 @@ public class RoleController {
 
     @GetMapping
     public ResponseEntity<ListResponse<RoleResponse>> getAllRoles() {
-       ListResponse<RoleResponse> response = roleService.getAllRoles(true);
+       ListResponse<RoleResponse> response = roleService.getAllRoles(false);
        return ResponseEntity.ok(response);
     }
 

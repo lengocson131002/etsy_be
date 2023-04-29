@@ -24,7 +24,7 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
     List<DashboardShopStatusCountProjection> countShopStatus();
 
     @Override
-    @EntityGraph(attributePaths = {"trackers"})
+    @EntityGraph(attributePaths = {"trackers", "team"})
     Page<Shop> findAll(Specification<Shop> specification, Pageable pageable);
 
     @Query("SELECT distinct (shop.status) " +

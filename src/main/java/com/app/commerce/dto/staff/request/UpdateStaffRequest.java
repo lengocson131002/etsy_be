@@ -39,4 +39,6 @@ public class UpdateStaffRequest {
     @UniqueElements
     @NotEmpty
     private List<String> roles;
+
+    private Long teamId;
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +44,7 @@ public class ShopServiceImpl implements ShopService {
         for (ShopDto shopDto : request.getShops()) {
             Shop shop = shopMapper.toEntity(shopDto);
             if (shop != null) {
+                shop.setLastSyncAt(OffsetDateTime.now());
                 shopRepository.save(shop);
             }
         }

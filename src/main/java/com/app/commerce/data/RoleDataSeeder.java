@@ -33,13 +33,17 @@ public class RoleDataSeeder implements CommandLineRunner {
                         .setName("System administration")
                         .setDescription("Role for system administration"),
                 new Role()
-                        .setCode("ROLE_MANAGER")
-                        .setName("Manager")
-                        .setDescription("Role for manager"),
+                        .setCode("ROLE_LEADER")
+                        .setName("Leader")
+                        .setDescription("Team leader"),
                 new Role()
-                        .setCode("ROLE_STAFF")
-                        .setName("Staff")
-                        .setDescription("Role for staff")
+                        .setCode("ROLE_CS")
+                        .setName("CS")
+                        .setDescription("Role for customer service"),
+                new Role()
+                        .setCode("ROLE_SELLER")
+                        .setName("Seller")
+                        .setDescription("Role for customer service")
         );
 
         roleRepository.saveAll(roles);

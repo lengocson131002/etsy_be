@@ -38,6 +38,11 @@ public class User extends BaseEntity implements UserDetails {
     private String fullName;
     private String email;
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",

@@ -2,6 +2,7 @@ package com.app.commerce.dto.staff.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Role;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.criteria.Predicate;
@@ -25,6 +26,8 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
 
     private String role;
 
+    private Long teamId;
+
     @JsonIgnore
     private List<String> exceptedRoles;
 
@@ -41,6 +44,10 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
                 exceptedRoles.forEach(exceptedRole -> {
                     predicates.add(cb.notEqual(root.join(User.Fields.roles).get(Role.Fields.code), exceptedRole));
                 });
+            }
+
+            if (teamId != null) {
+                predicates.add(cb.equal(root.join(User.Fields.team).get(Team.Fields.id), teamId));
             }
 
             List<Predicate> queryPredicates = new ArrayList<>();

@@ -7,6 +7,7 @@ import com.app.commerce.dto.staff.request.UpdateStaffRequest;
 import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.entity.Role;
 import com.app.commerce.entity.Shop;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -14,6 +15,7 @@ import com.app.commerce.mappings.ShopMapper;
 import com.app.commerce.mappings.UserMapper;
 import com.app.commerce.repository.RoleRepository;
 import com.app.commerce.repository.ShopRepository;
+import com.app.commerce.repository.TeamRepository;
 import com.app.commerce.repository.UserRepository;
 import com.app.commerce.service.StaffService;
 import lombok.RequiredArgsConstructor;
@@ -35,41 +37,39 @@ public class StaffServiceImpl implements StaffService {
     private final PasswordEncoder passwordEncoder;
     private final String ROLE_ADMIN_CODE = "ROLE_ADMIN";
     private final UserMapper userMapper;
-
     private final ShopMapper shopMapper;
     private final ShopRepository shopRepository;
+    private final TeamRepository teamRepository;
 
     @Override
     @Transactional
     public UserResponse createStaff(CreateStaffRequest request) {
+        User staff = userMapper.toEntity(request);
         List<Role> roles = request.getRoles()
                 .stream()
-                .map(roleCode -> {
-                    if (ROLE_ADMIN_CODE.equalsIgnoreCase(roleCode)) {
-                        throw new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND);
-                    }
-
-                    return roleRepository
-                            .findByCode(roleCode)
-                            .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND));
-
-                })
+                .map(roleCode -> roleRepository
+                        .findByCode(roleCode)
+                        .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND)))
                 .toList();
+        staff.setRoles(roles);
 
-        if (userRepository.existsByUsername(request.getUsername())) {
+        if (userRepository.existsByUsername(staff.getUsername())) {
             throw new ApiException(ResponseCode.STAFF_ERROR_USERNAME_EXISTED);
         }
 
-        if (request.getStaffId() != null
-                && !request.getStaffId().isEmpty()
-                && userRepository.existsByStaffId(request.getStaffId())) {
+        if (StringUtils.isNotBlank(staff.getStaffId())
+                && userRepository.existsByStaffId(staff.getStaffId())) {
             throw new ApiException(ResponseCode.STAFF_ERROR_STAFF_ID_EXISTED);
         }
 
-        User user = userMapper.toEntity(request);
-        user.setRoles(roles);
+        Long teamId = request.getTeamId();
+        if (teamId != null) {
+            Team team = teamRepository.findById(teamId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+            staff.setTeam(team);
+        }
 
-        User saved = userRepository.save(user);
+        User saved = userRepository.save(staff);
         return userMapper.toResponse(saved);
     }
 
@@ -108,6 +108,13 @@ public class StaffServiceImpl implements StaffService {
             throw new ApiException(ResponseCode.STAFF_ERROR_STAFF_ID_EXISTED);
         }
 
+        Long teamId = request.getTeamId();
+        if (teamId != null) {
+            Team team = teamRepository.findById(teamId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+            staff.setTeam(team);
+        }
+
         staff.setStaffId(request.getStaffId())
                 .setUsername(request.getUsername())
                 .setPassword(StringUtils.isNotBlank(request.getPassword())
@@ -121,15 +128,9 @@ public class StaffServiceImpl implements StaffService {
 
         List<Role> roles = request.getRoles()
                 .stream()
-                .map(roleCode -> {
-                    if (ROLE_ADMIN_CODE.equalsIgnoreCase(roleCode)) {
-                        throw new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND);
-                    }
-                    return roleRepository
+                .map(roleCode -> roleRepository
                             .findByCode(roleCode)
-                            .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND));
-
-                })
+                            .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND)))
                 .toList();
 
         staff.getRoles().clear();
