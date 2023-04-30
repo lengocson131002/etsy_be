@@ -29,7 +29,6 @@ public class UserMapperImpl implements UserMapper {
                 .setStaffId(request.getStaffId())
                 .setUsername(request.getUsername())
                 .setPassword(passwordEncoder.encode(request.getPassword()))
-                .setPassword(request.getPassword())
                 .setPhoneNumber(request.getPhoneNumber())
                 .setEmail(request.getEmail())
                 .setFullName(request.getFullName())

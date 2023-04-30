@@ -8,6 +8,11 @@ import com.app.commerce.dto.profile.request.GetAllProfilesRequest;
 import com.app.commerce.dto.profile.request.UpdateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.entity.GoLoginProfile;
+import com.app.commerce.entity.Role;
+import com.app.commerce.entity.User;
+import com.app.commerce.enums.ResponseCode;
+import com.app.commerce.exception.ApiException;
+import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.ProfileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -26,8 +31,21 @@ public class ProfileController {
 
     private final ProfileService profileService;
 
+    private final AuthenticationService authenticationService;
+
     @GetMapping
     public ResponseEntity<PageResponse<GoLoginProfile, GoLoginProfileResponse>> getAllProfiles(@Valid @ParameterObject GetAllProfilesRequest request) {
+        if (!authenticationService.isAdmin()) {
+            User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
+                    .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+
+            if (loggedUser.getTeam() == null) {
+                return ResponseEntity.ok(new PageResponse<>());
+            }
+
+            request.setTeamId(loggedUser.getTeam().getId());
+        }
+
         if (StringUtils.isBlank(request.getSortBy())) {
             request.setSortBy(GoLoginProfile.Fields.createdDate);
             request.setSortDir(Sort.Direction.DESC);

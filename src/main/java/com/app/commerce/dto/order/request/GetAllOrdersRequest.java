@@ -3,7 +3,7 @@ package com.app.commerce.dto.order.request;
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Order;
 import com.app.commerce.entity.Shop;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.app.commerce.entity.Team;
 import jakarta.persistence.criteria.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +20,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
     private String shopId;
     private String query;
     private String status;
+    private Long teamId;
 
     @Override
     public Specification<Order> getSpecification() {
@@ -44,6 +45,14 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                 queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.id)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.name)), queryPattern));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
+            }
+
+            if (teamId != null) {
+                predicates.add(cb.equal(
+                        root.join(Order.Fields.shop)
+                                .join(Shop.Fields.team)
+                                .get(Team.Fields.id),
+                        teamId));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

@@ -24,4 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
     @Override
     @EntityGraph(attributePaths = {"team"})
     Page<User> findAll(Specification<User> spec, Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"team"})
+    Optional<User> findById(Long aLong);
 }

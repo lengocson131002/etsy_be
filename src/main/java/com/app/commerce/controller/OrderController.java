@@ -7,6 +7,10 @@ import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.entity.Order;
+import com.app.commerce.entity.User;
+import com.app.commerce.enums.ResponseCode;
+import com.app.commerce.exception.ApiException;
+import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.OrderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -28,8 +32,21 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final AuthenticationService authenticationService;
+
     @GetMapping
     public ResponseEntity<PageResponse<Order, OrderResponse>> getAllOrders(@Valid @ParameterObject GetAllOrdersRequest request) {
+        if (!authenticationService.isAdmin()) {
+            User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
+                    .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+
+            if (loggedUser.getTeam() == null) {
+                return ResponseEntity.ok(new PageResponse<>());
+            }
+
+            request.setTeamId(loggedUser.getTeam().getId());
+        }
+
         PageResponse<Order, OrderResponse> response = orderService.getAllOrder(request);
         return ResponseEntity.ok(response);
     }

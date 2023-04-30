@@ -1,10 +1,10 @@
 package com.app.commerce.dto.listing.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
+import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Listing;
-import com.app.commerce.entity.Order;
 import com.app.commerce.entity.Shop;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.app.commerce.entity.Team;
 import jakarta.persistence.criteria.Predicate;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +24,8 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
     private String status;
 
+    private Long teamId;
+
     @Override
     public Specification<Listing> getSpecification() {
         return (root, criteriaQuery, cb) -> {
@@ -33,8 +35,9 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
                 predicates.add(cb.equal(root.join(Listing.Fields.shop).get(Shop.Fields.id), shopId));
             }
 
-            List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
+                List<Predicate> queryPredicates = new ArrayList<>();
+
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";
                 queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.title)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.join(Listing.Fields.shop).get(Shop.Fields.id)), queryPattern));
@@ -46,6 +49,14 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
             if (StringUtils.isNotBlank(status)) {
                 predicates.add(cb.equal(root.get(Listing.Fields.status), status));
+            }
+
+            if (teamId != null) {
+                predicates.add(cb.equal(
+                        root.join(Listing.Fields.shop)
+                                .join(Shop.Fields.team)
+                                .get(Team.Fields.id),
+                        teamId));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

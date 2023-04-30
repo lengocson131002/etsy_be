@@ -17,15 +17,18 @@ import com.app.commerce.repository.RoleRepository;
 import com.app.commerce.repository.ShopRepository;
 import com.app.commerce.repository.TeamRepository;
 import com.app.commerce.repository.UserRepository;
+import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.StaffService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +43,8 @@ public class StaffServiceImpl implements StaffService {
     private final ShopMapper shopMapper;
     private final ShopRepository shopRepository;
     private final TeamRepository teamRepository;
+
+    private final AuthenticationService authenticationService;
 
     @Override
     @Transactional
@@ -145,8 +150,11 @@ public class StaffServiceImpl implements StaffService {
         User staff = userRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND));
 
-        if (staff.getRoles().stream().anyMatch(role -> role.getCode().equals(ROLE_ADMIN_CODE))) {
-            throw new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND);
+        String currentUsername = authenticationService.getCurrentAuthentication()
+                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized"));
+
+        if (Objects.equals(currentUsername, staff.getUsername())) {
+            throw new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND);
         }
         userRepository.delete(staff);
     }

@@ -7,6 +7,10 @@ import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.entity.Listing;
+import com.app.commerce.entity.User;
+import com.app.commerce.enums.ResponseCode;
+import com.app.commerce.exception.ApiException;
+import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.ListingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -28,8 +32,21 @@ public class ListingController {
 
     private final ListingService listingService;
 
+    private final AuthenticationService authenticationService;
+
     @GetMapping
     public ResponseEntity<PageResponse<Listing, ListingResponse>> getAllListing(@Valid @ParameterObject GetAllListingsRequest request) {
+        if (!authenticationService.isAdmin()) {
+            User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
+                    .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+
+            if (loggedUser.getTeam() == null) {
+                return ResponseEntity.ok(new PageResponse<>());
+            }
+
+            request.setTeamId(loggedUser.getTeam().getId());
+        }
+
         PageResponse<Listing, ListingResponse> response = listingService.getAllListings(request);
         return ResponseEntity.ok(response);
     }

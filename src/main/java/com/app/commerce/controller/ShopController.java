@@ -13,10 +13,10 @@ import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
-import com.app.commerce.entity.BaseEntity;
-import com.app.commerce.entity.Order;
-import com.app.commerce.entity.Listing;
-import com.app.commerce.entity.Shop;
+import com.app.commerce.entity.*;
+import com.app.commerce.enums.ResponseCode;
+import com.app.commerce.exception.ApiException;
+import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.OrderService;
 import com.app.commerce.service.ListingService;
 import com.app.commerce.service.ShopService;
@@ -41,6 +41,8 @@ public class ShopController {
 
     private final ListingService productService;
 
+    private final AuthenticationService authenticationService;
+
     @PutMapping
     public ResponseEntity<StatusResponse> updateShopsData(@Valid @RequestBody UpdateListShopsRequest request) {
         shopService.updateShopData(request);
@@ -50,6 +52,17 @@ public class ShopController {
     @GetMapping("")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
+        if (!authenticationService.isAdmin()) {
+            User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
+                    .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+
+            if (loggedUser.getTeam() == null) {
+                return ResponseEntity.ok(new PageResponse<>());
+            }
+
+            request.setTeamId(loggedUser.getTeam().getId());
+        }
+
         if (StringUtils.isBlank(request.getSortBy())) {
             request.setSortBy(Shop.Fields.openedDate);
         }

@@ -2,7 +2,12 @@ package com.app.commerce.enums;
 
 public enum ResponseCode {
 
+
     INVALID_USERNAME_OR_PASSWORD(102, "Invalid username or password"),
+
+    UNAUTHORIZED(401, "Unauthorized"),
+
+    INTERNAL_SERVER_ERROR(500, "Internal server error"),
 
     //Shop
     SHOP_ERROR_NOT_FOUND(202, "Shop not found"),
@@ -18,6 +23,8 @@ public enum ResponseCode {
     STAFF_ERROR_NOT_FOUND(403, "Account not found"),
 
     STAFF_ERROR_STAFF_ID_EXISTED(402, "Staff ID existed"),
+
+    STAFF_ERROR_REMOVE_YOURSELF(403, "Can't remove yourself"),
 
 
     //LISTING

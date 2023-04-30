@@ -40,5 +40,6 @@ public class CreateStaffRequest {
     @NotEmpty
     private List<String> roles;
 
+    @NotNull
     private Long teamId;
 }

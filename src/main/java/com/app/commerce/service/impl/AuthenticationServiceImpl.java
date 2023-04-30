@@ -1,5 +1,6 @@
 package com.app.commerce.service.impl;
 
+import com.app.commerce.config.BaseConstants;
 import com.app.commerce.config.JwtService;
 import com.app.commerce.dto.auth.request.AuthenticationRequest;
 import com.app.commerce.dto.auth.response.AuthenticationResponse;
@@ -13,12 +14,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -76,13 +81,39 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public Optional<User> getCurrentAuthenticatedAccount() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return userRepository.findByUsername(((UserDetails) principal).getUsername());
+        }
+        return userRepository.findByUsername(principal.toString());
+    }
+
+    @Override
+    public Optional<String> getCurrentAuthentication() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
         }
+        return Optional.of(username);
+    }
 
-        return userRepository.findByUsername(username);
+    @Override
+    public List<String> getCurrentAuthenticationRoles() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<String> roles = new ArrayList<>();
+        if (principal instanceof UserDetails) {
+            roles = ((UserDetails) principal).getAuthorities()
+                    .stream().map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toList());
+        }
+        return roles;
+    }
+
+    @Override
+    public boolean isAdmin() {
+        return getCurrentAuthenticationRoles()
+                .stream().anyMatch(role -> Objects.equals(role, BaseConstants.ROLE_ADMIN_CODE));
     }
 }
