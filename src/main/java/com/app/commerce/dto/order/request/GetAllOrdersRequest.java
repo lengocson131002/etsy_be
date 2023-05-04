@@ -35,8 +35,9 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                 predicates.add(cb.equal(root.get(Order.Fields.progressStep), status));
             }
 
-            List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
+                List<Predicate> queryPredicates = new ArrayList<>();
+
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.etsyOrderId)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.orderName)), queryPattern));

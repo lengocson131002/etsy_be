@@ -45,8 +45,8 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
                 predicates.add(cb.equal(root.join(Shop.Fields.team).get(Team.Fields.id), teamId));
             }
 
-            List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
+                List<Predicate> queryPredicates = new ArrayList<>();
                 query = query.trim().toLowerCase();
                 queryPredicates.add(cb.like(cb.lower(root.get(Shop.Fields.name)), "%" + query + "%"));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));

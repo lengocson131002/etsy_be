@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +38,10 @@ public class ShopServiceImpl implements ShopService {
     private final ConversationMapper conversationMapper;
 
     private final ListingMapper listingMapper;
+
+    private final String ACTIVE_STATUS = "active";
+
+    private final String INACTIVE_STATUS = "inactive";
 
     @Override
     @Transactional
@@ -73,9 +78,12 @@ public class ShopServiceImpl implements ShopService {
         shop.setName(request.getName() != null
                 ? request.getName()
                 : shop.getName());
-        shop.setStatus(request.getStatus() != null
-                ? request.getStatus()
-                : shop.getStatus());
+
+        if (request.getStatus() != null) {
+            shop.setPreviousStatus(shop.getStatus());
+            shop.setStatus(request.getStatus());
+        }
+
         shop.setCurrencySymbol(request.getCurrencySymbol() != null
                 ? request.getCurrencySymbol()
                 : shop.getCurrencySymbol());
@@ -139,6 +147,38 @@ public class ShopServiceImpl implements ShopService {
     public List<String> getAllShopStatuses() {
         List<String> statuses = shopRepository.findAllStatuses();
         return statuses;
+    }
+
+    @Override
+    public void deactivateShop(String id) {
+        Shop shop = shopRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+        shop.setPreviousStatus(shop.getStatus());
+        shop.setStatus(INACTIVE_STATUS);
+
+        shopRepository.save(shop);
+    }
+
+    @Override
+    public void activateShop(String id) {
+        Shop shop = shopRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+        String prevState = shop.getPreviousStatus();
+        shop.setPreviousStatus(shop.getStatus());
+
+        shop.setStatus(Objects.requireNonNullElse(prevState, ACTIVE_STATUS));
+
+        shopRepository.save(shop);
+    }
+
+    @Override
+    public String getStatus(String id) {
+        Shop shop = shopRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+        return shop.getStatus();
     }
 
 }

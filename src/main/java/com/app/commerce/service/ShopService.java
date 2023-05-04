@@ -20,4 +20,10 @@ public interface ShopService {
     void updateShopData(String id, UpdateShopRequest shopDto);
 
     List<String> getAllShopStatuses();
+
+    void deactivateShop(String id);
+
+    void activateShop(String id);
+
+    String getStatus(String id);
 }

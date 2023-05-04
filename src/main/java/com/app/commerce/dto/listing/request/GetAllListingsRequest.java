@@ -40,8 +40,6 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";
                 queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.title)), queryPattern));
-                queryPredicates.add(cb.like(cb.lower(root.join(Listing.Fields.shop).get(Shop.Fields.id)), queryPattern));
-                queryPredicates.add(cb.like(cb.lower(root.join(Listing.Fields.shop).get(Shop.Fields.name)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Listing.Fields.etsyListingId)), queryPattern));
 
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));

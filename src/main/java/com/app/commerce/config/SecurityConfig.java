@@ -75,6 +75,8 @@ public class SecurityConfig {
                 .permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/v1/shops/**")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/shops/*/status")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

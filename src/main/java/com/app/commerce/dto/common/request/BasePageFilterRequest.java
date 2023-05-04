@@ -21,7 +21,7 @@ public abstract class BasePageFilterRequest<T> {
     @PositiveOrZero
     private int pageNum = BaseConstants.DEFAULT_PAGE_NUMBER;
     @Positive
-    @Max(100)
+    @Max(200)
     private int pageSize = BaseConstants.DEFAULT_PAGE_SIZE;
 
     private String sortBy;

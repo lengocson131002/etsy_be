@@ -13,6 +13,7 @@ import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
+import com.app.commerce.dto.shop.response.ShopStatusResponse;
 import com.app.commerce.entity.*;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -88,8 +89,28 @@ public class ShopController {
     @GetMapping("/{id}")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<ShopDetailResponse> getShop(@PathVariable String id) {
-        ShopDetailResponse response = shopService.getShop(id);
+        ShopDetailResponse response =  shopService.getShop(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/status")
+    public ResponseEntity<ShopStatusResponse> getShopStatus(@PathVariable String id) {
+        String status =  shopService.getStatus(id);
+        return ResponseEntity.ok(new ShopStatusResponse(status));
+    }
+
+    @PutMapping("/{id}/deactivate")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<StatusResponse> deactivateShop(@PathVariable String id) {
+        shopService.deactivateShop(id);
+        return ResponseEntity.ok(new StatusResponse(true));
+    }
+
+    @PutMapping("/{id}/activate")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<StatusResponse> activate(@PathVariable String id) {
+        shopService.activateShop(id);
+        return ResponseEntity.ok(new StatusResponse(true));
     }
 
     @GetMapping("/{id}/orders")
@@ -107,4 +128,5 @@ public class ShopController {
         PageResponse<Listing, ListingResponse> response = productService.getAllListings(request);
         return ResponseEntity.ok(response);
     }
+
 }
