@@ -26,8 +26,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PageResponse<Order, OrderResponse> getAllOrder(GetAllOrdersRequest request) {
         Page<Order> pageResult = orderRepository.findAll(request.getSpecification(), request.getPageable());
-        PageResponse<Order, OrderResponse> response = new PageResponse<>(pageResult, orderMapper::toResponse);
-        return response;
+        return new PageResponse<>(pageResult, orderMapper::toResponse);
     }
 
     @Override

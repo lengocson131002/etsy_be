@@ -154,6 +154,10 @@ public class ShopServiceImpl implements ShopService {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
 
+        if (Objects.equals(shop.getStatus(), INACTIVE_STATUS)) {
+            return;
+        }
+
         shop.setPreviousStatus(shop.getStatus());
         shop.setStatus(INACTIVE_STATUS);
 
@@ -164,6 +168,10 @@ public class ShopServiceImpl implements ShopService {
     public void activateShop(String id) {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+        if (!Objects.equals(shop.getStatus(), INACTIVE_STATUS)) {
+            return;
+        }
 
         String prevState = shop.getPreviousStatus();
         shop.setPreviousStatus(shop.getStatus());

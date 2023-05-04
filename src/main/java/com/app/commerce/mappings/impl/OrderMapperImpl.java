@@ -10,6 +10,7 @@ import com.app.commerce.entity.Shop;
 import com.app.commerce.mappings.OrderMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +18,8 @@ public class OrderMapperImpl implements OrderMapper {
 
     @Override
     public Order toEntity(OrderDto dto) {
+        List<OrderDto.OrderItemDto> items = dto.getItems();
+
         return new Order()
                 .setEtsyOrderId(dto.getId())
                 .setProgressStep(dto.getProgressStep())
@@ -40,6 +43,9 @@ public class OrderMapperImpl implements OrderMapper {
                 .setTrackingNumber(dto.getTrackingNumber())
                 .setMarkAsGift(dto.getMarkAsGift())
                 .setOrderEmail(dto.getOrderEmail())
+                .setImage(!items.isEmpty()
+                        ? items.get(0).getImage()
+                        : null)
                 .setItems(dto.getItems().stream()
                         .map(this::toOrderItemEntity)
                         .collect(Collectors.toList()));
@@ -75,9 +81,7 @@ public class OrderMapperImpl implements OrderMapper {
         }
         OrderResponse response = new OrderResponse();
         response.setId(order.getId());
-        response.setImage(!order.getItems().isEmpty()
-                ? order.getItems().get(0).getImage()
-                : null);
+        response.setImage(order.getImage());
         response.setEtsyOrderId(order.getEtsyOrderId());
         response.setProgressStep(order.getProgressStep());
         response.setItemCount(order.getItemCount());
@@ -119,9 +123,7 @@ public class OrderMapperImpl implements OrderMapper {
         }
         OrderDetailResponse response = new OrderDetailResponse();
         response.setId(order.getId());
-        response.setImage(!order.getItems().isEmpty()
-                ? order.getItems().get(0).getImage()
-                : null);
+        response.setImage(order.getImage());
         response.setEtsyOrderId(order.getEtsyOrderId());
         response.setProgressStep(order.getProgressStep());
         response.setItemCount(order.getItemCount());

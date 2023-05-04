@@ -22,6 +22,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     List<String> findAllStatuses();
 
     @Override
-    @EntityGraph(attributePaths = {"shop", "items"})
+    @EntityGraph(attributePaths = {"shop"})
     Page<Order> findAll(Specification<Order> spec, Pageable pageable);
 }

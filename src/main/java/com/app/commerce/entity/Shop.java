@@ -8,7 +8,6 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
-import java.text.Normalizer;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +36,6 @@ public class Shop extends BaseEntity {
     private String description;
     private boolean isTracked = false;
     private OffsetDateTime lastSyncAt;
-
-    private String search;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
