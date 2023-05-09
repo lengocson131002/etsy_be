@@ -21,6 +21,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         }
         Conversation conversation =  new Conversation()
                 .setCustomerName(dto.getCustomerName())
+                .setCustomerImage(dto.getCustomerImage())
                 .setUnreadCount(dto.getUnreadCount())
                 .setMessageTime(dto.getMessageTime());
 
@@ -41,6 +42,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         return new ConversationResponse()
                 .setId(conversation.getId())
                 .setCustomerName(conversation.getCustomerName())
+                .setCustomerImage(conversation.getCustomerImage())
                 .setUnreadCount(conversation.getUnreadCount())
                 .setMessageTime(conversation.getMessageTime())
                 .setShopId(conversation.getShop() != null ? conversation.getShop().getId() : null)
@@ -55,6 +57,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         ConversationDetailResponse response = new ConversationDetailResponse();
         response.setId(conversation.getId());
         response.setCustomerName(conversation.getCustomerName());
+        response.setCustomerImage(conversation.getCustomerImage());
         response.setUnreadCount(conversation.getUnreadCount());
         response.setMessageTime(conversation.getMessageTime());
         response.setShopId(conversation.getShop() != null ? conversation.getShop().getId() : null);

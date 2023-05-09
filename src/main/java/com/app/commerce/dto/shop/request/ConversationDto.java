@@ -19,6 +19,11 @@ public class ConversationDto {
     @JsonProperty("customer_name")
     @JsonDeserialize(using = TrimString.class)
     private String customerName;
+
+    @JsonProperty("customer_image")
+    @JsonDeserialize(using = TrimString.class)
+    private String customerImage;
+
     @JsonProperty("unread_count")
     @PositiveOrZero
     private Integer unreadCount;

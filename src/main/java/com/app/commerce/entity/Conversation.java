@@ -28,6 +28,7 @@ public class Conversation {
     public Long id;
 
     private String customerName;
+    private String customerImage;
 
     private Integer unreadCount;
 

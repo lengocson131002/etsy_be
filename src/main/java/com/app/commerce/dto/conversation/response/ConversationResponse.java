@@ -15,7 +15,7 @@ public class ConversationResponse {
     public Long id;
 
     private String customerName;
-
+    private String customerImage;
     private Integer unreadCount;
 
     private String messageTime;

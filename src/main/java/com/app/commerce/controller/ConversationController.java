@@ -1,7 +1,6 @@
 package com.app.commerce.controller;
 
 import com.app.commerce.config.OpenApiConfig;
-import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.conversation.request.GetAllConversationsRequest;
 import com.app.commerce.dto.conversation.response.ConversationDetailResponse;
