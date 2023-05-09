@@ -8,6 +8,9 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = Conversation.COLLECTION_NAME)
 @Getter
@@ -33,4 +36,25 @@ public class Conversation {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "conversation"
+    )
+    private List<Message> messages;
+
+    public Conversation setMessages(List<Message> messages) {
+        if (this.messages == null) {
+            this.messages = messages;
+        } else {
+            this.messages.clear();
+            this.messages.addAll(messages);
+        }
+
+        this.messages.forEach(message -> message.setConversation(this));
+        return this;
+    }
+
 }

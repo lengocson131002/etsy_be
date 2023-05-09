@@ -53,7 +53,8 @@ public enum ResponseCode {
 
     TEAM_ERROR_SHOP_ASSIGNED(805, "Shop was assigned"),
 
-
+    // Conversation
+    CONVERSATION_ERROR_NOT_FOUND(901, "Conversation not found")
 ;
 
     private final int code;

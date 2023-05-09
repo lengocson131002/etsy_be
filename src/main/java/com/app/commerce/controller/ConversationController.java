@@ -1,8 +1,10 @@
 package com.app.commerce.controller;
 
 import com.app.commerce.config.OpenApiConfig;
+import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.conversation.request.GetAllConversationsRequest;
+import com.app.commerce.dto.conversation.response.ConversationDetailResponse;
 import com.app.commerce.dto.conversation.response.ConversationResponse;
 import com.app.commerce.entity.Conversation;
 import com.app.commerce.entity.User;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +46,12 @@ public class ConversationController {
         }
 
         PageResponse<Conversation, ConversationResponse> response = conversationService.getAllConversations(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ConversationDetailResponse> getConversation(@PathVariable Long id) {
+        ConversationDetailResponse response = conversationService.getConversation(id);
         return ResponseEntity.ok(response);
     }
 }
