@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +22,8 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
     private String query;
     private String status;
     private Long teamId;
+    private OffsetDateTime from;
+    private OffsetDateTime to;
 
     @Override
     public Specification<Order> getSpecification() {
@@ -54,6 +57,14 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                                 .join(Shop.Fields.team)
                                 .get(Team.Fields.id),
                         teamId));
+            }
+
+            if (from != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get(Order.Fields.orderTime), from));
+            }
+
+            if (to != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get(Order.Fields.orderTime), to));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
