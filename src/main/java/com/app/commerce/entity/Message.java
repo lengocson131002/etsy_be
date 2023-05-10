@@ -15,7 +15,6 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Table(name = Message.COLLECTION_NAME)
 public class Message {
-
     public final static String COLLECTION_NAME = "messages";
 
     @Id
