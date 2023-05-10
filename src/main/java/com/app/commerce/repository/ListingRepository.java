@@ -33,4 +33,6 @@ public interface ListingRepository extends JpaRepository<Listing, Long>, JpaSpec
     @Override
     @EntityGraph(attributePaths = {"shop"})
     Page<Listing> findAll(Specification<Listing> spec, Pageable pageable);
+
+    long countByShopStatus(String status);
 }

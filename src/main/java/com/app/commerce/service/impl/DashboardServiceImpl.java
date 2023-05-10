@@ -65,4 +65,46 @@ public class DashboardServiceImpl implements DashboardService {
                 .setRevenues(revenues)
                 .setStatusCount(statusCount);
     }
+
+    @Override
+    public DashboardTotalResponse getDashboard(DashboardType dateRange, String status) {
+        if (status == null) {
+            return getDashboard(dateRange);
+        }
+
+        // Count total shop
+        Long shopCount = shopRepository.countByStatus(status);
+
+        // Count total Listing
+        Long listingCount = listingRepository.countByShopStatus(status);
+
+        Long orderCount = dashboardRepository.countOrder(dateRange.name(), status);
+
+        Long visitCount = dashboardRepository.countVisit(dateRange.name(), status);
+
+        List<DashboardRevenueProjection> countRevenue = dashboardRepository.countRevenue(dateRange.name(), status);
+
+        List<DashboardTotalResponse.DashboardRevenueTotalResponse> revenues = new ArrayList<>();
+        countRevenue.forEach(projection -> {
+            String currencyCode = projection.getCurrencyCode();
+            String currencySymbol = projection.getCurrencySymbol();
+            BigDecimal value = projection.getValue();
+
+            revenues.add(new DashboardTotalResponse.DashboardRevenueTotalResponse(currencyCode, currencySymbol, value));
+        });
+
+        List<StatusCountProjection> shopStatusCount = shopRepository.countShopStatus(status);
+        List<DashboardTotalResponse.DashboardShopStatusCountResponse> statusCount = new ArrayList<>();
+        shopStatusCount.forEach(statusProjection -> {
+            statusCount.add(new DashboardTotalResponse.DashboardShopStatusCountResponse(statusProjection.getStatus(), statusProjection.getCount()));
+        });
+
+        return new DashboardTotalResponse()
+                .setShopCount(shopCount)
+                .setListingCount(listingCount)
+                .setOrderCount(orderCount)
+                .setVisitCount(visitCount)
+                .setRevenues(revenues)
+                .setStatusCount(statusCount);
+    }
 }

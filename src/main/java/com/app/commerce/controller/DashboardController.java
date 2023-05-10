@@ -21,8 +21,9 @@ public class DashboardController {
     private final DashboardService dashboardService;
 
     @GetMapping()
-    public ResponseEntity<DashboardTotalResponse> getDashboardTotal(@RequestParam DashboardType dateRange) {
-        DashboardTotalResponse response = dashboardService.getDashboard(dateRange);
+    public ResponseEntity<DashboardTotalResponse> getDashboardTotal(@RequestParam DashboardType dateRange,
+                                                                    @RequestParam(required = false) String status) {
+        DashboardTotalResponse response = dashboardService.getDashboard(dateRange, status);
         return ResponseEntity.ok(response);
     }
 

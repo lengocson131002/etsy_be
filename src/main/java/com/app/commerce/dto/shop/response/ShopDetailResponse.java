@@ -39,4 +39,6 @@ public class ShopDetailResponse {
     DashboardResponse dashboard;
 
     List<UserResponse> trackers;
+    private String avatar;
+    private String banner;
 }

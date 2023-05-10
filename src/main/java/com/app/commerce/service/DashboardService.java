@@ -8,4 +8,7 @@ public interface DashboardService {
 
     DashboardTotalResponse getDashboard(DashboardType dateRange);
 
+    DashboardTotalResponse getDashboard(DashboardType dateRange, String status);
+
+
 }

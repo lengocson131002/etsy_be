@@ -49,7 +49,9 @@ public class ShopMapperImpl implements ShopMapper {
                 .setOpenedDate(info.getOpenedDate())
                 .setStatus(info.getStatus())
                 .setCurrencyCode(info.getCurrencyCode())
-                .setCurrencySymbol(info.getCurrencySymbol());
+                .setCurrencySymbol(info.getCurrencySymbol())
+                .setAvatar(info.getAvatar())
+                .setBanner(info.getBanner());
 
         // Profile
         if (dto.getProfile() != null) {
@@ -117,6 +119,8 @@ public class ShopMapperImpl implements ShopMapper {
         response.setCurrencySymbol(shop.getCurrencySymbol());
         response.setIsTracked(shop.isTracked());
         response.setLastSyncAt(shop.getLastSyncAt());
+        response.setAvatar(shop.getAvatar());
+        response.setBanner(shop.getBanner());
 
         if (shop.getAllTimeDashboard() != null) {
             Dashboard dashboard = shop.getAllTimeDashboard();
@@ -157,6 +161,8 @@ public class ShopMapperImpl implements ShopMapper {
         response.setCurrencySymbol(shop.getCurrencySymbol());
         response.setProfile(profileMapper.toResponse(shop.getProfile()));
         response.setLastSyncAt(shop.getLastSyncAt());
+        response.setAvatar(shop.getAvatar());
+        response.setBanner(shop.getBanner());
 
         if (shop.getAllTimeDashboard() != null) {
             Dashboard dashboard = shop.getAllTimeDashboard();

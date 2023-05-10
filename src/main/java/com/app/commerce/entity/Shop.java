@@ -36,6 +36,8 @@ public class Shop extends BaseEntity {
     private String description;
     private boolean isTracked = false;
     private OffsetDateTime lastSyncAt;
+    private String avatar;
+    private String banner;
 
     @ManyToOne
     @JoinColumn(name = "team_id")

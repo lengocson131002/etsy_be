@@ -23,6 +23,14 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
     )
     List<StatusCountProjection> countShopStatus();
 
+    @Query("SELECT shop.status as status," +
+            "COUNT (shop) as count " +
+            "FROM Shop shop " +
+            "WHERE ?1 IS NULL OR shop.status = ?1 " +
+            "GROUP BY shop.status"
+    )
+    List<StatusCountProjection> countShopStatus(String status);
+
     @Override
     @EntityGraph(attributePaths = {"trackers", "team"})
     Page<Shop> findAll(Specification<Shop> specification, Pageable pageable);
@@ -33,4 +41,6 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
     List<String> findAllStatuses();
 
     List<Shop> findByTrackersId(Long trackerId);
+
+    long countByStatus(String status);
 }

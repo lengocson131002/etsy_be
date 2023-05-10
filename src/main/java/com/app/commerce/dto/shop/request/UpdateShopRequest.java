@@ -40,6 +40,14 @@ public class UpdateShopRequest {
     @JsonDeserialize(using = TrimString.class)
     private String description;
 
+    @JsonProperty("avatar")
+    @JsonDeserialize(using = TrimString.class)
+    private String avatar;
+
+    @JsonProperty("banner")
+    @JsonDeserialize(using = TrimString.class)
+    private String banner;
+
     @JsonProperty("profile")
     @Valid
     @NotNull

@@ -32,4 +32,6 @@ public class ShopResponse {
     private String teamName;
     private List<String> trackers;
     private OffsetDateTime lastSyncAt;
+    private String avatar;
+    private String banner;
 }
