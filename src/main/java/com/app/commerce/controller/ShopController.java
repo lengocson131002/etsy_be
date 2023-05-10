@@ -3,6 +3,7 @@ package com.app.commerce.controller;
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderResponse;
@@ -74,8 +75,8 @@ public class ShopController {
 
     @GetMapping("/statuses")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
-    public ResponseEntity<ListResponse<String>> getAllShopStatuses() {
-        List<String> response = shopService.getAllShopStatuses();
+    public ResponseEntity<ListResponse<StatusCountResponse>> getAllShopStatuses() {
+        List<StatusCountResponse> response = shopService.getAllShopStatuses();
         return ResponseEntity.ok(new ListResponse<>(response));
     }
 

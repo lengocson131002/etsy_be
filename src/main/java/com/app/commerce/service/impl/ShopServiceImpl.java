@@ -2,6 +2,7 @@ package com.app.commerce.service.impl;
 
 import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.shop.request.*;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
@@ -144,9 +145,11 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public List<String> getAllShopStatuses() {
-        List<String> statuses = shopRepository.findAllStatuses();
-        return statuses;
+    public List<StatusCountResponse> getAllShopStatuses() {
+        return shopRepository.countShopStatus()
+                .stream()
+                .map(prj -> new StatusCountResponse(prj.getStatus(), prj.getCount()))
+                .collect(Collectors.toList());
     }
 
     @Override

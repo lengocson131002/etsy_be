@@ -2,6 +2,7 @@ package com.app.commerce.repository;
 
 import com.app.commerce.entity.Conversation;
 import com.app.commerce.entity.Order;
+import com.app.commerce.repository.projections.StatusCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +21,15 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
             "FROM Order order " +
             "WHERE order.progressStep IS NOT NULL")
     List<String> findAllStatuses();
+
+
+    @Query("SELECT order.progressStep as status, " +
+            "COUNT (order) as count " +
+            "FROM Order order " +
+            "JOIN order.shop shop " +
+            "WHERE order.progressStep IS NOT NULL AND (?1 IS NULL OR shop.id = ?1) " +
+            "GROUP BY order.progressStep")
+    List<StatusCountProjection> findAllStatuses(String shopId);
 
     @Override
     @EntityGraph(attributePaths = {"shop"})

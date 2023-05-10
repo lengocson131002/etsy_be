@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class Conversation {
     private Integer unreadCount;
 
     private String messageTime;
+
+    private OffsetDateTime lastMessageTime;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")

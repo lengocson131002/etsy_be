@@ -1,6 +1,7 @@
 package com.app.commerce.service;
 
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
@@ -12,4 +13,6 @@ public interface ListingService {
     PageResponse<Listing, ListingResponse> getAllListings(GetAllListingsRequest request);
     ListingDetailResponse getListing(Long id);
     List<String> getAllStatuses();
+
+    List<StatusCountResponse> getAllStatuses(String shopId);
 }

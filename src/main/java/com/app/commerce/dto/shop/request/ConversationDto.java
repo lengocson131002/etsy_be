@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Getter
@@ -30,6 +31,9 @@ public class ConversationDto {
     @JsonProperty("message_time")
     @JsonDeserialize(using = TrimString.class)
     private String messageTime;
+
+    @JsonProperty("last_message_time")
+    private OffsetDateTime lastMessageTime;
 
     @JsonProperty("messages")
     private List<MessageDto> messages;

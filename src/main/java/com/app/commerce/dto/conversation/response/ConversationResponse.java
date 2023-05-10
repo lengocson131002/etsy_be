@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import java.time.OffsetDateTime;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,6 +22,7 @@ public class ConversationResponse {
 
     private String messageTime;
 
+    private OffsetDateTime lastMessageTime;
     private String shopId;
 
     private String shopName;

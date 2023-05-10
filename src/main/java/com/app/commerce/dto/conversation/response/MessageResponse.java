@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,4 +18,5 @@ public class MessageResponse {
     private String content;
     private OffsetDateTime time;
     private Boolean isAdmin;
+    private List<String> images;
 }

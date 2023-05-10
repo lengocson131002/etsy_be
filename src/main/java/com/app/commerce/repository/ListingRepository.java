@@ -2,6 +2,7 @@ package com.app.commerce.repository;
 
 import com.app.commerce.entity.Conversation;
 import com.app.commerce.entity.Listing;
+import com.app.commerce.repository.projections.StatusCountProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +21,14 @@ public interface ListingRepository extends JpaRepository<Listing, Long>, JpaSpec
             "FROM Listing listing " +
             "WHERE listing.status IS NOT NULL")
     List<String> findAllStatuses();
+
+    @Query("SELECT listing.status as status, " +
+            "COUNT (listing) as count " +
+            "FROM Listing listing " +
+            "JOIN listing.shop shop " +
+            "WHERE listing.status IS NOT NULL AND (?1 IS NULL OR shop.id = ?1) " +
+            "GROUP BY listing.status")
+    List<StatusCountProjection> findAllStatuses(String shopId);
 
     @Override
     @EntityGraph(attributePaths = {"shop"})

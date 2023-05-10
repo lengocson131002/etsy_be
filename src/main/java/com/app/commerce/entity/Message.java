@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +29,11 @@ public class Message {
     @ManyToOne
     @JoinColumn(name = "conversation_id")
     private Conversation conversation;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "message_images",
+            joinColumns = @JoinColumn(name = "message_id"))
+    @Column(name = "image")
+    private List<String> images;
 }

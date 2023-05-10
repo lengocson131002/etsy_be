@@ -3,6 +3,7 @@ package com.app.commerce.controller;
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
@@ -17,12 +18,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/listings")
@@ -52,8 +51,8 @@ public class ListingController {
     }
 
     @GetMapping("/statuses")
-    public ResponseEntity<ListResponse<String>> getAllListingStatuses() {
-        List<String> statues = listingService.getAllStatuses();
+    public ResponseEntity<ListResponse<StatusCountResponse>> getAllListingStatuses(@RequestParam Optional<String> shopId) {
+        List<StatusCountResponse> statues = listingService.getAllStatuses(shopId.orElse(null));
         return ResponseEntity.ok(new ListResponse<>(statues));
     }
 

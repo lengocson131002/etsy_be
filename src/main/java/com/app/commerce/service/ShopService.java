@@ -1,6 +1,7 @@
 package com.app.commerce.service;
 
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.shop.request.GetAllShopRequest;
 import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
@@ -19,7 +20,7 @@ public interface ShopService {
 
     void updateShopData(String id, UpdateShopRequest shopDto);
 
-    List<String> getAllShopStatuses();
+    List<StatusCountResponse> getAllShopStatuses();
 
     void deactivateShop(String id);
 

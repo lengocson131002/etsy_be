@@ -1,6 +1,7 @@
 package com.app.commerce.service.impl;
 
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +45,13 @@ public class ListingServiceImpl implements ListingService {
     @Override
     public List<String> getAllStatuses() {
         return listingRepository.findAllStatuses();
+    }
+
+    @Override
+    public List<StatusCountResponse> getAllStatuses(String shopId) {
+        return listingRepository.findAllStatuses(shopId)
+                .stream()
+                .map(prj -> new StatusCountResponse(prj.getStatus(), prj.getCount()))
+                .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package com.app.commerce.service;
 
 import com.app.commerce.dto.common.response.PageResponse;
+import com.app.commerce.dto.common.response.StatusCountResponse;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
@@ -14,4 +15,6 @@ public interface OrderService {
     OrderDetailResponse getOrder(Long id);
 
     List<String> getAllStatuses();
+
+    List<StatusCountResponse> getAllStatuses(String shopId);
 }

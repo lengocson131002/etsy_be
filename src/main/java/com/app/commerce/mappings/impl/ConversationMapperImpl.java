@@ -23,7 +23,8 @@ public class ConversationMapperImpl implements ConversationMapper {
                 .setCustomerName(dto.getCustomerName())
                 .setCustomerImage(dto.getCustomerImage())
                 .setUnreadCount(dto.getUnreadCount())
-                .setMessageTime(dto.getMessageTime());
+                .setMessageTime(dto.getMessageTime())
+                .setLastMessageTime(dto.getLastMessageTime());
 
         if (dto.getMessages() != null) {
             conversation.setMessages(dto.getMessages()
@@ -45,6 +46,7 @@ public class ConversationMapperImpl implements ConversationMapper {
                 .setCustomerImage(conversation.getCustomerImage())
                 .setUnreadCount(conversation.getUnreadCount())
                 .setMessageTime(conversation.getMessageTime())
+                .setLastMessageTime(conversation.getLastMessageTime())
                 .setShopId(conversation.getShop() != null ? conversation.getShop().getId() : null)
                 .setShopName(conversation.getShop() != null ? conversation.getShop().getName() : null);
     }
@@ -60,6 +62,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         response.setCustomerImage(conversation.getCustomerImage());
         response.setUnreadCount(conversation.getUnreadCount());
         response.setMessageTime(conversation.getMessageTime());
+        response.setLastMessageTime(conversation.getLastMessageTime());
         response.setShopId(conversation.getShop() != null ? conversation.getShop().getId() : null);
         response.setShopName(conversation.getShop() != null ? conversation.getShop().getName() : null);
 
@@ -86,7 +89,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         response.setTime(message.getTime());
         response.setContent(message.getContent());
         response.setIsAdmin(message.getIsAdmin());
-
+        response.setImages(message.getImages());
         return response;
     }
 
@@ -96,7 +99,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         message.setContent(messageDto.getContent());
         message.setTime(messageDto.getTime());
         message.setIsAdmin(messageDto.getIsAdmin());
-
+        message.setImages(messageDto.getImages());
         return message;
     }
 

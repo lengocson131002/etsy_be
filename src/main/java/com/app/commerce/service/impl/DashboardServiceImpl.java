@@ -6,7 +6,7 @@ import com.app.commerce.repository.DashboardRepository;
 import com.app.commerce.repository.ListingRepository;
 import com.app.commerce.repository.ShopRepository;
 import com.app.commerce.repository.projections.DashboardRevenueProjection;
-import com.app.commerce.repository.projections.DashboardShopStatusCountProjection;
+import com.app.commerce.repository.projections.StatusCountProjection;
 import com.app.commerce.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,7 +49,7 @@ public class DashboardServiceImpl implements DashboardService {
             revenues.add(new DashboardTotalResponse.DashboardRevenueTotalResponse(currencyCode, currencySymbol, value));
         });
 
-        List<DashboardShopStatusCountProjection> shopStatusCount = shopRepository.countShopStatus();
+        List<StatusCountProjection> shopStatusCount = shopRepository.countShopStatus();
         List<DashboardTotalResponse.DashboardShopStatusCountResponse> statusCount = new ArrayList<>();
         shopStatusCount.forEach(statusProjection -> {
             String status = statusProjection.getStatus();
