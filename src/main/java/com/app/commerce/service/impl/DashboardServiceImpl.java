@@ -29,6 +29,10 @@ public class DashboardServiceImpl implements DashboardService {
     @Override
     @Transactional
     public DashboardTotalResponse getDashboard(DashboardType dateRange) {
+        if (dateRange == null) {
+            dateRange = DashboardType.ALL_TIME;
+        }
+
         // Count total shop
         Long shopCount = shopRepository.count();
 

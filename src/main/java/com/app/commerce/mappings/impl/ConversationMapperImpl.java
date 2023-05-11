@@ -10,6 +10,7 @@ import com.app.commerce.entity.Message;
 import com.app.commerce.mappings.ConversationMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,7 +70,7 @@ public class ConversationMapperImpl implements ConversationMapper {
         if (conversation.getMessages() != null) {
             response.setMessages(conversation.getMessages()
                     .stream()
-                    .sorted((m1, m2) -> m2.getTime().isAfter(m1.getTime()) ? 1 : -1)
+                    .sorted(Comparator.comparing(Message::getTime))
                     .map(this::toMessageResponse)
                     .collect(Collectors.toList())
             );
