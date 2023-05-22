@@ -34,4 +34,12 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     @Override
     @EntityGraph(attributePaths = {"shop"})
     Page<Order> findAll(Specification<Order> spec, Pageable pageable);
+
+    @Query("SELECT shop.status as status," +
+            "COUNT (order) as count " +
+            "FROM Order order " +
+            "JOIN order.shop shop " +
+            "WHERE shop.status IS NOT NULL " +
+            "GROUP BY shop.status")
+    List<StatusCountProjection> countByShopStatus();
 }

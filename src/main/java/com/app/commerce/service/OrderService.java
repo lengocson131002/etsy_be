@@ -17,4 +17,6 @@ public interface OrderService {
     List<String> getAllStatuses();
 
     List<StatusCountResponse> getAllStatuses(String shopId);
+
+    List<StatusCountResponse> countByShopStatus();
 }

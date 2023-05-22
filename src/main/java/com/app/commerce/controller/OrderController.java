@@ -63,6 +63,12 @@ public class OrderController {
         return ResponseEntity.ok(new ListResponse<>(statuses));
     }
 
+    @GetMapping("/count/shop-status")
+    public ResponseEntity<ListResponse<StatusCountResponse>> countOrderByShopStatus() {
+        List<StatusCountResponse> statuses = orderService.countByShopStatus();
+        return ResponseEntity.ok(new ListResponse<>(statuses));
+    }
+
 
     @GetMapping("{id}")
     public ResponseEntity<OrderDetailResponse> getOrder(@PathVariable Long id) {

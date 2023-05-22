@@ -51,4 +51,12 @@ public class OrderServiceImpl implements OrderService {
                 .map(prj -> new StatusCountResponse(prj.getStatus(), prj.getCount()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<StatusCountResponse> countByShopStatus() {
+        return orderRepository.countByShopStatus()
+                .stream()
+                .map(prj -> new StatusCountResponse(prj.getStatus(), prj.getCount()))
+                .collect(Collectors.toList());
+    }
 }

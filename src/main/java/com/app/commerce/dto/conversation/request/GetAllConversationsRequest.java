@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,10 @@ public class GetAllConversationsRequest extends BasePageFilterRequest<Conversati
     private String query;
 
     private Long teamId;
+
+    private OffsetDateTime from;
+
+    private OffsetDateTime to;
 
     @Override
     public Specification<Conversation> getSpecification() {
@@ -45,6 +50,14 @@ public class GetAllConversationsRequest extends BasePageFilterRequest<Conversati
                                 .join(Shop.Fields.team)
                                 .get(Team.Fields.id),
                         teamId));
+            }
+
+            if (from != null) {
+                predicates.add(cb.greaterThanOrEqualTo(root.get(Conversation.Fields.lastMessageTime), from));
+            }
+
+            if (to != null) {
+                predicates.add(cb.lessThanOrEqualTo(root.get(Conversation.Fields.lastMessageTime), to));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
