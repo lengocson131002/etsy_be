@@ -24,6 +24,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
     private Long teamId;
     private OffsetDateTime from;
     private OffsetDateTime to;
+    private String shopStatus;
 
     @Override
     public Specification<Order> getSpecification() {
@@ -65,6 +66,10 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
 
             if (to != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get(Order.Fields.orderTime), to));
+            }
+
+            if (StringUtils.isNotBlank(shopStatus)) {
+                predicates.add(cb.equal(root.get(Order.Fields.shop).get(Shop.Fields.status), status));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

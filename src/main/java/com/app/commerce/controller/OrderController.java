@@ -16,7 +16,9 @@ import com.app.commerce.service.OrderService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +46,11 @@ public class OrderController {
             }
 
             request.setTeamId(loggedUser.getTeam().getId());
+        }
+
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy(Order.Fields.orderTime);
+            request.setSortDir(Sort.Direction.DESC);
         }
 
         PageResponse<Order, OrderResponse> response = orderService.getAllOrder(request);

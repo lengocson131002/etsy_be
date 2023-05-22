@@ -44,10 +44,6 @@ public class TeamServiceImpl implements TeamService {
             throw new ApiException(ResponseCode.TEAM_ERROR_EXISTS_NAME);
         }
 
-        if (teamRepository.existsByCode(request.getCode())) {
-            throw new ApiException(ResponseCode.TEAM_ERROR_EXISTS_NAME);
-        }
-
         Team team = teamMapper.toEntity(request);
         Team savedTeam = teamRepository.save(team);
 
