@@ -69,7 +69,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
             }
 
             if (StringUtils.isNotBlank(shopStatus)) {
-                predicates.add(cb.equal(root.get(Order.Fields.shop).get(Shop.Fields.status), status));
+                predicates.add(cb.equal(root.get(Order.Fields.shop).get(Shop.Fields.status), shopStatus));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
