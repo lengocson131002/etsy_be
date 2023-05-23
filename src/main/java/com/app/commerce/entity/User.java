@@ -8,10 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -47,19 +44,33 @@ public class User extends BaseEntity implements UserDetails {
     )
     private Set<Team> teams;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "trackers")
+    private Set<Shop> trackings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getCode()))
                 .collect(Collectors.toList());
+    }
+
+    @PreRemove
+    private void preRemove() {
+        for (Team t : teams) {
+            t.getStaffs().removeIf(staff -> Objects.equals(staff.getId(), this.getId()));
+        }
+
+        for (Shop shop: trackings) {
+            shop.getTrackers().removeIf(tracker -> Objects.equals(tracker.getId(), this.getId()));
+        }
     }
 
     @Override

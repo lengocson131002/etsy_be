@@ -12,6 +12,7 @@ import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.dto.shop.request.GetAllShopRequest;
 import com.app.commerce.dto.shop.request.UpdateListShopsRequest;
 import com.app.commerce.dto.shop.request.UpdateShopRequest;
+import com.app.commerce.dto.shop.request.UpdateShopTeamRequest;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
 import com.app.commerce.dto.shop.response.ShopStatusResponse;
@@ -132,6 +133,13 @@ public class ShopController {
         request.setShopId(id);
         PageResponse<Listing, ListingResponse> response = productService.getAllListings(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/teams")
+    @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
+    public ResponseEntity<StatusResponse> updateTeams(@PathVariable String id, @RequestBody UpdateShopTeamRequest request) {
+        shopService.updateTeams(id, request.getTeamIds());
+        return ResponseEntity.ok(new StatusResponse(true));
     }
 
 }

@@ -41,5 +41,6 @@ public class CreateStaffRequest {
     private List<String> roles;
 
     @NotNull
+    @UniqueElements
     private List<Long> teamIds;
 }

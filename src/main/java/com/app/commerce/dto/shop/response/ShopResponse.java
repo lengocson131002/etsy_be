@@ -1,6 +1,7 @@
 package com.app.commerce.dto.shop.response;
 
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
+import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.dto.team.response.TeamResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class ShopResponse {
     private BigDecimal revenue;
     private Boolean isTracked;
     private List<TeamResponse> teams;
-    private List<String> trackers;
+    List<UserResponse> trackers;
     private OffsetDateTime lastSyncAt;
     private String avatar;
     private String banner;

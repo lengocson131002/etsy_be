@@ -7,11 +7,13 @@ import com.app.commerce.dto.shop.request.*;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
 import com.app.commerce.entity.Shop;
+import com.app.commerce.entity.Team;
 import com.app.commerce.enums.DashboardType;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
 import com.app.commerce.mappings.*;
 import com.app.commerce.repository.ShopRepository;
+import com.app.commerce.repository.TeamRepository;
 import com.app.commerce.service.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +46,8 @@ public class ShopServiceImpl implements ShopService {
     private final String ACTIVE_STATUS = "active";
 
     private final String INACTIVE_STATUS = "inactive";
+
+    private final TeamRepository teamRepository;
 
     @Override
     @Transactional
@@ -190,6 +195,21 @@ public class ShopServiceImpl implements ShopService {
                 .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
 
         return shop.getStatus();
+    }
+
+    @Override
+    public void updateTeams(String id, List<Long> teamIds) {
+        Shop shop = shopRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+        Set<Team> teams = teamIds
+                .stream()
+                .map(teamId -> teamRepository.findById(teamId)
+                        .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND)))
+                .collect(Collectors.toSet());
+
+        shop.setTeams(teams);
+        shopRepository.save(shop);
     }
 
 }

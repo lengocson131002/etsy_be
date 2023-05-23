@@ -9,10 +9,7 @@ import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = Shop.COLLECTION_NAME)
@@ -53,7 +50,7 @@ public class Shop extends BaseEntity {
             joinColumns = @JoinColumn(name = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "staff_id")
     )
-    private List<User> trackers;
+    private Set<User> trackers;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
@@ -161,7 +158,7 @@ public class Shop extends BaseEntity {
 
     public void addTracker(User staff) {
         if (this.getTrackers() == null) {
-            this.setTrackers(new ArrayList<>());
+            this.setTrackers(new HashSet<>());
         }
         if (this.getTrackers().stream().noneMatch(tracker -> Objects.equals(tracker.getId(), staff.getId()))) {
             this.getTrackers().add(staff);

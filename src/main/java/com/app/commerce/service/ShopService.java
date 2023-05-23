@@ -27,4 +27,6 @@ public interface ShopService {
     void activateShop(String id);
 
     String getStatus(String id);
+
+    void updateTeams(String id, List<Long> teamIds);
 }

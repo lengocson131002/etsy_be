@@ -134,7 +134,7 @@ public class ShopMapperImpl implements ShopMapper {
         if (shop.getTrackers() != null) {
             response.setTrackers(shop.getTrackers()
                     .stream()
-                    .map(User::getUsername)
+                    .map(userMapper::toResponse)
                     .collect(Collectors.toList()));
         }
 

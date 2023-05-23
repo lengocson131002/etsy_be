@@ -51,12 +51,13 @@ public class StaffServiceImpl implements StaffService {
     @Transactional
     public UserResponse createStaff(CreateStaffRequest request) {
         User staff = userMapper.toEntity(request);
-        List<Role> roles = request.getRoles()
+        Set<Role> roles = request.getRoles()
                 .stream()
                 .map(roleCode -> roleRepository
                         .findByCode(roleCode)
                         .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND)))
-                .toList();
+                .collect(Collectors.toSet());
+
         staff.setRoles(roles);
 
         if (userRepository.existsByUsername(staff.getUsername())) {

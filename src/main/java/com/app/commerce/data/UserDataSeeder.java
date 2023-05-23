@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class UserDataSeeder implements CommandLineRunner {
         User admin = new User()
                 .setUsername("admin")
                 .setEmail("admin@gmail.com")
-                .setRoles(List.of(adminRole))
+                .setRoles(Set.of(adminRole))
                 .setFullName("admin")
                 .setPassword(passwordEncoder.encode("Aqswde123@")); // Aqswde123@
         userRepository.save(admin);
