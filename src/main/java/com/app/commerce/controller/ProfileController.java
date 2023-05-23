@@ -9,6 +9,7 @@ import com.app.commerce.dto.profile.request.UpdateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Role;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -22,6 +23,8 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/profiles")
@@ -39,11 +42,14 @@ public class ProfileController {
             User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
                     .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
-            if (loggedUser.getTeam() == null) {
+            if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
 
-            request.setTeamId(loggedUser.getTeam().getId());
+            request.setTeamIds(loggedUser.getTeams()
+                    .stream()
+                    .map(Team::getId)
+                    .collect(Collectors.toList()));
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {

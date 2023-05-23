@@ -21,7 +21,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
     private String shopId;
     private String query;
     private String status;
-    private Long teamId;
+    private List<Long> teamIds;
     private OffsetDateTime from;
     private OffsetDateTime to;
     private String shopStatus;
@@ -52,12 +52,11 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
 
-            if (teamId != null) {
-                predicates.add(cb.equal(
-                        root.join(Order.Fields.shop)
-                                .join(Shop.Fields.team)
-                                .get(Team.Fields.id),
-                        teamId));
+            if (teamIds != null) {
+                predicates.add(root.join(Order.Fields.shop)
+                        .join(Shop.Fields.teams)
+                        .get(Team.Fields.id)
+                        .in(teamIds));
             }
 
             if (from != null) {

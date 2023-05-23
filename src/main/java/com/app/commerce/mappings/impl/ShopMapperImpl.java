@@ -4,6 +4,7 @@ import com.app.commerce.dto.dashboard.response.DashboardResponse;
 import com.app.commerce.dto.shop.request.*;
 import com.app.commerce.dto.shop.response.ShopDetailResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
+import com.app.commerce.dto.team.response.TeamResponse;
 import com.app.commerce.entity.Dashboard;
 import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Shop;
@@ -30,8 +31,8 @@ public class ShopMapperImpl implements ShopMapper {
     private final ListingMapper productMapper;
     private final ConversationMapper conversationMapper;
     private final ProfileMapper profileMapper;
-
     private final UserMapper userMapper;
+
 
     private final ProfileRepository profileRepository;
 
@@ -137,9 +138,19 @@ public class ShopMapperImpl implements ShopMapper {
                     .collect(Collectors.toList()));
         }
 
-        if (shop.getTeam() != null) {
-            response.setTeamId(shop.getTeam().getId());
-            response.setTeamName(shop.getTeam().getName());
+        if (shop.getTeams() != null) {
+            response.setTeams(shop.getTeams()
+                    .stream()
+                    .map(team -> new TeamResponse()
+                            .setId(team.getId())
+                            .setCode(team.getCode())
+                            .setName(team.getName())
+                            .setDescription(team.getDescription())
+                            .setCreatedAt(team.getCreatedAt())
+                            .setCreatedBy(team.getCreatedBy())
+                            .setUpdatedAt(team.getUpdatedAt())
+                            .setUpdatedBy(team.getUpdatedBy()))
+                    .collect(Collectors.toList()));
         }
 
         return response;
@@ -198,9 +209,19 @@ public class ShopMapperImpl implements ShopMapper {
                 .collect(Collectors.toList())
         );
 
-        if (shop.getTeam() != null) {
-            response.setTeamId(shop.getTeam().getId());
-            response.setTeamName(shop.getTeam().getName());
+        if (shop.getTeams() != null) {
+            response.setTeams(shop.getTeams()
+                    .stream()
+                    .map(team -> new TeamResponse()
+                            .setId(team.getId())
+                            .setCode(team.getCode())
+                            .setName(team.getName())
+                            .setDescription(team.getDescription())
+                            .setCreatedAt(team.getCreatedAt())
+                            .setCreatedBy(team.getCreatedBy())
+                            .setUpdatedAt(team.getUpdatedAt())
+                            .setUpdatedBy(team.getUpdatedBy()))
+                    .collect(Collectors.toList()));
         }
 
         response.setDashboard(dashboard);

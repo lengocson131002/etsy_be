@@ -26,7 +26,7 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
 
     private Long trackerId;
 
-    private Long teamId;
+    private List<Long> teamIds;
 
     @Override
     public Specification<Shop> getSpecification() {
@@ -41,8 +41,8 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
                 predicates.add(cb.equal(root.join(Shop.Fields.trackers).get(User.Fields.id), trackerId));
             }
 
-            if (teamId != null) {
-                predicates.add(cb.equal(root.join(Shop.Fields.team).get(Team.Fields.id), teamId));
+            if (teamIds != null) {
+                predicates.add(root.join(Shop.Fields.teams).get(Team.Fields.id).in(teamIds));
             }
 
             if (StringUtils.isNotBlank(query)) {

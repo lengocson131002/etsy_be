@@ -24,7 +24,7 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
 
     private String status;
 
-    private Long teamId;
+    private List<Long> teamIds;
 
     @Override
     public Specification<Listing> getSpecification() {
@@ -49,12 +49,11 @@ public class GetAllListingsRequest extends BasePageFilterRequest<Listing> {
                 predicates.add(cb.equal(root.get(Listing.Fields.status), status));
             }
 
-            if (teamId != null) {
-                predicates.add(cb.equal(
-                        root.join(Listing.Fields.shop)
-                                .join(Shop.Fields.team)
-                                .get(Team.Fields.id),
-                        teamId));
+            if (teamIds != null) {
+                predicates.add(root.join(Listing.Fields.shop)
+                                .join(Shop.Fields.teams)
+                                .get(Team.Fields.id)
+                                .in(teamIds));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

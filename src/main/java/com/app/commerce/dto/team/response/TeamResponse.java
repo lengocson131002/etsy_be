@@ -2,11 +2,13 @@ package com.app.commerce.dto.team.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.time.OffsetDateTime;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 public class TeamResponse {
     private Long id;
     private String name;

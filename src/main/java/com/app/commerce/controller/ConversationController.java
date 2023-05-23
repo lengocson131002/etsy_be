@@ -6,6 +6,7 @@ import com.app.commerce.dto.conversation.request.GetAllConversationsRequest;
 import com.app.commerce.dto.conversation.response.ConversationDetailResponse;
 import com.app.commerce.dto.conversation.response.ConversationResponse;
 import com.app.commerce.entity.Conversation;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/v1/conversations")
 @RequiredArgsConstructor
@@ -39,11 +42,14 @@ public class ConversationController {
             User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
                     .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
-            if (loggedUser.getTeam() == null) {
+            if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
 
-            request.setTeamId(loggedUser.getTeam().getId());
+            request.setTeamIds(loggedUser.getTeams()
+                    .stream()
+                    .map(Team::getId)
+                    .collect(Collectors.toList()));
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {

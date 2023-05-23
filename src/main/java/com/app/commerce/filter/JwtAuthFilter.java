@@ -2,6 +2,9 @@ package com.app.commerce.filter;
 
 import com.app.commerce.config.ApiError;
 import com.app.commerce.config.JwtService;
+import com.app.commerce.enums.ResponseCode;
+import com.app.commerce.exception.ApiException;
+import com.app.commerce.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,7 +33,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final String BEARER = "Bearer ";
-    private final UserDetailsService userService;
+    private final UserRepository userRepository;
 //    private final String AUTH_REGEX_PATTERN = "\\/api\\/(?:\\S*\\/|)auth(?:\\/\\S*|)";
 
     @Override
@@ -51,7 +54,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             username = jwtService.extractUsername(jwt);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userService.loadUserByUsername(username);
+                UserDetails userDetails = this.userRepository.findByUsername(username)
+                        .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+
                 if (jwtService.isTokenValid(jwt, userDetails)) {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                             userDetails,

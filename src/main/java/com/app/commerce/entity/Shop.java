@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = Shop.COLLECTION_NAME)
@@ -39,9 +40,13 @@ public class Shop extends BaseEntity {
     private String avatar;
     private String banner;
 
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team team;
+    @ManyToMany
+    @JoinTable(
+            name = "shop_team",
+            joinColumns = @JoinColumn(name = "shop_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
+    private Set<Team> teams;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

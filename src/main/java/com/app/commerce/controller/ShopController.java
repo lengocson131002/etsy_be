@@ -31,6 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/shops")
@@ -58,11 +59,14 @@ public class ShopController {
             User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
                     .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
-            if (loggedUser.getTeam() == null) {
+            if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
 
-            request.setTeamId(loggedUser.getTeam().getId());
+            request.setTeamIds(loggedUser.getTeams()
+                    .stream()
+                    .map(Team::getId)
+                    .collect(Collectors.toList()));
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {

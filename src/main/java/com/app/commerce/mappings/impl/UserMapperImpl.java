@@ -2,7 +2,7 @@ package com.app.commerce.mappings.impl;
 
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.response.UserResponse;
-import com.app.commerce.entity.Team;
+import com.app.commerce.dto.team.response.TeamResponse;
 import com.app.commerce.entity.User;
 import com.app.commerce.mappings.RoleMapper;
 import com.app.commerce.mappings.UserMapper;
@@ -59,10 +59,19 @@ public class UserMapperImpl implements UserMapper {
                         .map(roleMapper::toResponse)
                         .collect(Collectors.toList()));
 
-        Team team = user.getTeam();
-        if (team != null) {
-            response.setTeamId(team.getId());
-            response.setTeamName(team.getName());
+        if (user.getTeams() != null) {
+            response.setTeams(user.getTeams()
+                    .stream()
+                    .map(team -> new TeamResponse()
+                            .setId(team.getId())
+                            .setCode(team.getCode())
+                            .setName(team.getName())
+                            .setDescription(team.getDescription())
+                            .setCreatedAt(team.getCreatedAt())
+                            .setCreatedBy(team.getCreatedBy())
+                            .setUpdatedAt(team.getUpdatedAt())
+                            .setUpdatedBy(team.getUpdatedBy()))
+                    .collect(Collectors.toList()));
         }
 
         return response;

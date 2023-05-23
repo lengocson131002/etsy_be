@@ -2,7 +2,6 @@ package com.app.commerce.dto.profile.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.GoLoginProfile;
-import com.app.commerce.entity.Listing;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.Team;
 import jakarta.persistence.criteria.Predicate;
@@ -20,18 +19,17 @@ public class GetAllProfilesRequest extends BasePageFilterRequest<GoLoginProfile>
 
     private String query;
 
-    private Long teamId;
+    private List<Long> teamIds;
 
     @Override
     public Specification<GoLoginProfile> getSpecification() {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (teamId != null) {
-                predicates.add(cb.equal(
-                        root.join(GoLoginProfile.Fields.shop)
-                            .join(Shop.Fields.team)
-                                .get(Team.Fields.id),
-                teamId));
+            if (teamIds != null) {
+                predicates.add(root.join(GoLoginProfile.Fields.shop)
+                        .join(Shop.Fields.teams)
+                        .get(Team.Fields.id)
+                        .in(teamIds));
             }
 
             if (StringUtils.isNotBlank(query)) {

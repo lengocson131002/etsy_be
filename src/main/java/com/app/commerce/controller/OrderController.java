@@ -8,6 +8,7 @@ import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
 import com.app.commerce.entity.Order;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -41,11 +43,14 @@ public class OrderController {
             User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
                     .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
-            if (loggedUser.getTeam() == null) {
+            if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
 
-            request.setTeamId(loggedUser.getTeam().getId());
+            request.setTeamIds(loggedUser.getTeams()
+                    .stream()
+                    .map(Team::getId)
+                    .collect(Collectors.toList()));
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {

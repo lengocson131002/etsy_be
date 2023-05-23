@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,11 +68,14 @@ public class StaffServiceImpl implements StaffService {
             throw new ApiException(ResponseCode.STAFF_ERROR_STAFF_ID_EXISTED);
         }
 
-        Long teamId = request.getTeamId();
-        if (teamId != null) {
-            Team team = teamRepository.findById(teamId)
-                    .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
-            staff.setTeam(team);
+        if (request.getTeamIds() != null) {
+            Set<Team> teams = request.getTeamIds()
+                    .stream()
+                    .map(teamId -> teamRepository.findById(teamId)
+                            .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND)))
+                    .collect(Collectors.toSet());
+
+            staff.setTeams(teams);
         }
 
         User saved = userRepository.save(staff);
@@ -113,11 +117,14 @@ public class StaffServiceImpl implements StaffService {
             throw new ApiException(ResponseCode.STAFF_ERROR_STAFF_ID_EXISTED);
         }
 
-        Long teamId = request.getTeamId();
-        if (teamId != null) {
-            Team team = teamRepository.findById(teamId)
-                    .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
-            staff.setTeam(team);
+        if (request.getTeamIds() != null) {
+            Set<Team> teams = request.getTeamIds()
+                    .stream()
+                    .map(teamId -> teamRepository.findById(teamId)
+                            .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND)))
+                    .collect(Collectors.toSet());
+
+            staff.setTeams(teams);
         }
 
         staff.setStaffId(request.getStaffId())
@@ -134,8 +141,8 @@ public class StaffServiceImpl implements StaffService {
         List<Role> roles = request.getRoles()
                 .stream()
                 .map(roleCode -> roleRepository
-                            .findByCode(roleCode)
-                            .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND)))
+                        .findByCode(roleCode)
+                        .orElseThrow(() -> new ApiException(ResponseCode.ROLE_ERROR_NOT_FOUND)))
                 .toList();
 
         staff.getRoles().clear();

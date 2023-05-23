@@ -2,6 +2,7 @@ package com.app.commerce.dto.staff.response;
 
 import com.app.commerce.dto.role.response.RoleResponse;
 import com.app.commerce.dto.shop.response.ShopResponse;
+import com.app.commerce.dto.team.response.TeamResponse;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -25,8 +26,7 @@ public class UserResponse {
     private String createdBy;
     private OffsetDateTime updatedAt;
     private String updatedBy;
-    private Long teamId;
-    private String teamName;
+    private List<TeamResponse> teams;
     private List<RoleResponse> roles;
     private List<ShopResponse> trackings;
 }

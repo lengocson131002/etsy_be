@@ -47,7 +47,7 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
             }
 
             if (teamId != null) {
-                predicates.add(cb.equal(root.join(User.Fields.team).get(Team.Fields.id), teamId));
+                predicates.add(cb.equal(root.join(User.Fields.teams).get(Team.Fields.id), teamId));
             }
 
             List<Predicate> queryPredicates = new ArrayList<>();

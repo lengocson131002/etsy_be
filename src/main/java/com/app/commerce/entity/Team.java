@@ -32,20 +32,20 @@ public class Team extends BaseEntity {
         this.code = code;
         this.description = description;
     }
-    @OneToMany(mappedBy = "team")
+    @ManyToMany(mappedBy = "teams")
     private Set<Shop> shops;
 
-    @OneToMany(mappedBy = "team")
+    @ManyToMany(mappedBy = "teams")
     private Set<User> staffs;
 
     @PreRemove
     private void preRemove() {
         for (Shop s : shops) {
-            s.setTeam(null);
+            s.getTeams().removeIf(team -> Objects.equals(team.getId(), this.getId()));
         }
 
         for (User staff: staffs) {
-            staff.setTeam(null);
+            staff.getTeams().removeIf(team -> Objects.equals(team.getId(), this.getId()));
         }
     }
 
@@ -55,7 +55,7 @@ public class Team extends BaseEntity {
         }
         if (shops.stream().noneMatch(s -> Objects.equals(s.getId(), shop.getId()))) {
             shops.add(shop);
-            shop.setTeam(this);
+//            shop.setTeam(this);
         }
     }
 
@@ -64,7 +64,7 @@ public class Team extends BaseEntity {
             return;
         }
         shops.removeIf(s -> Objects.equals(s.getId(), shop.getId()));
-        shop.setTeam(null);
+//        shop.setTeam(null);
     }
 
     public void addStaff(User staff) {
@@ -73,7 +73,7 @@ public class Team extends BaseEntity {
         }
         if (staffs.stream().noneMatch(s -> Objects.equals(s.getId(), staff.getId()))) {
             staffs.add(staff);
-            staff.setTeam(this);
+//            staff.setTeam(this);
         }
     }
 
@@ -82,6 +82,6 @@ public class Team extends BaseEntity {
             return;
         }
         staffs.removeIf(s -> Objects.equals(s.getId(), staff.getId()));
-        staff.setTeam(null);
+//        staff.setTeam(null);
     }
 }

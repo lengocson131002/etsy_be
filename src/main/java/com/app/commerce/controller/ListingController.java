@@ -8,6 +8,7 @@ import com.app.commerce.dto.listing.request.GetAllListingsRequest;
 import com.app.commerce.dto.listing.response.ListingDetailResponse;
 import com.app.commerce.dto.listing.response.ListingResponse;
 import com.app.commerce.entity.Listing;
+import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/listings")
@@ -39,11 +41,14 @@ public class ListingController {
             User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
                     .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
-            if (loggedUser.getTeam() == null) {
+            if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
 
-            request.setTeamId(loggedUser.getTeam().getId());
+            request.setTeamIds(loggedUser.getTeams()
+                    .stream()
+                    .map(Team::getId)
+                    .collect(Collectors.toList()));
         }
 
         PageResponse<Listing, ListingResponse> response = listingService.getAllListings(request);
