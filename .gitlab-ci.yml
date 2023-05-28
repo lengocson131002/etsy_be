@@ -1,7 +1,7 @@
 variables:
   APP_NAME: "shop-be"
   PORT: "8080"
-  NETWORK: lang-net
+  NETWORK: "lang-net"
   
 cache:
   paths:
