@@ -17,7 +17,7 @@ spring:
           time_zone: UTC
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
-    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:5432}/${DATASOURCE_DATABASE:commerce}
+    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:5432}/${DATASOURCE_DATABASE:commerce}?prepareThreshold=0
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:Aqswde123@}
     driverClassName: org.postgresql.Driver
