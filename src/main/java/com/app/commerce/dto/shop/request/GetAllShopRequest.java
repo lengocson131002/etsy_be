@@ -35,6 +35,9 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+            root.join(Shop.Fields.trackers, JoinType.LEFT).join(User.Fields.trackings, JoinType.LEFT);
+            criteriaQuery.distinct(true);
+
             if (StringUtils.isNotBlank(status)) {
                 predicates.add(cb.equal(cb.lower(root.get(Shop.Fields.status)), status.trim()));
             }

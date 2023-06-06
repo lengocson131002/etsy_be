@@ -130,6 +130,13 @@ public class ShopMapperImpl implements ShopMapper {
             response.setConversionRate(dashboard.getConversionRate());
             response.setRevenue(dashboard.getRevenue());
         }
+
+        response.setTrackers(shop.getTrackers()
+                .stream()
+                .map(userMapper::toResponse)
+                .collect(Collectors.toList())
+        );
+
         return response;
     }
 

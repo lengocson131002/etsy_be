@@ -85,6 +85,7 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
+    @Transactional
     public PageResponse<User, UserResponse> getAllStaffs(GetAllStaffRequest request) {
         Page<User> pageResult = userRepository.findAll(request.getSpecification(), request.getPageable());
         return new PageResponse<>(pageResult, userMapper::toResponse);
