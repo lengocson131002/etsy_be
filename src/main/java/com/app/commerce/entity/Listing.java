@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = Listing.COLLECTION_NAME)
 @FieldNameConstants
-public class Listing extends BaseEntity{
+public class Listing extends BaseEntity {
 
     public static final String COLLECTION_NAME = "listings";
 

@@ -20,7 +20,7 @@ spring:
     url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:${DATASOURCE_PORT:5432}/${DATASOURCE_DATABASE:commerce}
     username: ${DATASOURCE_USERNAME:postgres}
     password: ${DATASOURCE_PASSWORD:Aqswde123@}
-    driverClassName: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
 
   jackson:
     mapper:

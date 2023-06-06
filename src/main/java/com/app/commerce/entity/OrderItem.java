@@ -28,6 +28,8 @@ public class OrderItem {
     private BigDecimal price;
     private String name;
     private Integer quantity;
+
+    @Column(length = 2000)
     private String description;
 
     @ManyToOne
