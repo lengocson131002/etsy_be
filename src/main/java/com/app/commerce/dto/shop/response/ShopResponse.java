@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,8 +31,8 @@ public class ShopResponse {
     private Double conversionRate;
     private BigDecimal revenue;
     private Boolean isTracked;
-    private List<TeamResponse> teams;
-    List<UserResponse> trackers;
+    private List<TeamResponse> teams = new ArrayList<>();
+    List<UserResponse> trackers = new ArrayList<>();
     private OffsetDateTime lastSyncAt;
     private String avatar;
     private String banner;

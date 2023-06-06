@@ -7,6 +7,7 @@ import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.request.GetAllStaffRequest;
 import com.app.commerce.dto.staff.request.UpdateStaffRequest;
+import com.app.commerce.dto.staff.response.UserDetailResponse;
 import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.entity.BaseEntity;
 import com.app.commerce.entity.User;
@@ -44,8 +45,8 @@ public class StaffController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<UserResponse> getStaffDetail(@PathVariable Long id) {
-        UserResponse response = staffService.getStaff(id);
+    public ResponseEntity<UserDetailResponse> getStaffDetail(@PathVariable Long id) {
+        UserDetailResponse response = staffService.getStaff(id);
         return ResponseEntity.ok(response);
     }
 

@@ -4,6 +4,7 @@ import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.request.GetAllStaffRequest;
 import com.app.commerce.dto.staff.request.UpdateStaffRequest;
+import com.app.commerce.dto.staff.response.UserDetailResponse;
 import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.entity.Role;
 import com.app.commerce.entity.Shop;
@@ -90,12 +91,13 @@ public class StaffServiceImpl implements StaffService {
     }
 
     @Override
-    public UserResponse getStaff(Long id) {
+    @Transactional
+    public UserDetailResponse getStaff(Long id) {
         User staff = userRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND));
         List<Shop> trackings = shopRepository.findByTrackersId(staff.getId());
 
-        UserResponse response = userMapper.toResponse(staff);
+        UserDetailResponse response = userMapper.toDetailResponse(staff);
         response.setTrackings(trackings
                 .stream()
                 .map(shopMapper::toResponse)

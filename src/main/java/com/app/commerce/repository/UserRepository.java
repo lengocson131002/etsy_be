@@ -23,12 +23,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
 
     @Override
     @EntityGraph(attributePaths = {"teams", "roles"})
-    @QueryHints(
-            value = @QueryHint(name = "org.hibernate.fetchSize", value = "0")
-    )
-    Page<User> findAll(Specification<User> spec, Pageable pageable);
-
-    @Override
-    @EntityGraph(attributePaths = {"teams", "roles"})
     Optional<User> findById(Long id);
 }

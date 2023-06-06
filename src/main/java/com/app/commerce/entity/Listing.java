@@ -38,7 +38,7 @@ public class Listing extends BaseEntity {
     private Integer allTimeRenewals;
     private Integer stock;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shop_id")
     private Shop shop;
 

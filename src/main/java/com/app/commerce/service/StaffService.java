@@ -4,6 +4,7 @@ import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.staff.request.CreateStaffRequest;
 import com.app.commerce.dto.staff.request.GetAllStaffRequest;
 import com.app.commerce.dto.staff.request.UpdateStaffRequest;
+import com.app.commerce.dto.staff.response.UserDetailResponse;
 import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.entity.User;
 
@@ -14,7 +15,7 @@ public interface StaffService {
 
     PageResponse<User, UserResponse> getAllStaffs(GetAllStaffRequest request);
 
-    UserResponse getStaff(Long id);
+    UserDetailResponse getStaff(Long id);
 
     void updateStaff(Long id, UpdateStaffRequest request);
 

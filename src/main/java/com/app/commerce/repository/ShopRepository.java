@@ -30,10 +30,7 @@ public interface ShopRepository extends JpaRepository<Shop, String>, JpaSpecific
     List<StatusCountProjection> countShopStatus(String status);
 
     @Override
-    @EntityGraph(attributePaths = {"trackers", "teams"})
-    @QueryHints(
-            value = @QueryHint(name = "org.hibernate.fetchSize", value = "0")
-    )
+    @EntityGraph(attributePaths = {"profile", "allTimeDashboard"})
     Page<Shop> findAll(Specification<Shop> specification, Pageable pageable);
 
     @Query("SELECT distinct (shop.status) " +

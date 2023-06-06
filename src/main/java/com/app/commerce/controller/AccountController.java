@@ -8,6 +8,7 @@ import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.shop.request.GetAllShopRequest;
 import com.app.commerce.dto.shop.response.ShopResponse;
 import com.app.commerce.dto.staff.request.GetAllStaffRequest;
+import com.app.commerce.dto.staff.response.UserDetailResponse;
 import com.app.commerce.dto.staff.response.UserResponse;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.User;
@@ -38,11 +39,11 @@ public class AccountController {
     private final StaffService staffService;
 
     @GetMapping
-    public ResponseEntity<UserResponse> getCurrentLoginAccount() {
+    public ResponseEntity<UserDetailResponse> getCurrentLoginAccount() {
         User currentUser = authService.getCurrentAuthenticatedAccount()
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized"));
 
-        UserResponse currentUserResponse = userMapper.toResponse(currentUser);
+        UserDetailResponse currentUserResponse = userMapper.toDetailResponse(currentUser);
         return ResponseEntity.ok(currentUserResponse);
     }
 

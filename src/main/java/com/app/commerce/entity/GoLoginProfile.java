@@ -40,6 +40,6 @@ public class GoLoginProfile {
 
     private String folderName;
 
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY)
     private Shop shop;
 }

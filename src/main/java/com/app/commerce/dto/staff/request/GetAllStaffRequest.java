@@ -5,6 +5,7 @@ import com.app.commerce.entity.Role;
 import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

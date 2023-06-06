@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -27,6 +28,4 @@ public class UserResponse {
     private OffsetDateTime updatedAt;
     private String updatedBy;
     private List<TeamResponse> teams;
-    private List<RoleResponse> roles;
-    private List<ShopResponse> trackings;
 }

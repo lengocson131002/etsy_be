@@ -130,29 +130,6 @@ public class ShopMapperImpl implements ShopMapper {
             response.setConversionRate(dashboard.getConversionRate());
             response.setRevenue(dashboard.getRevenue());
         }
-
-        if (shop.getTrackers() != null) {
-            response.setTrackers(shop.getTrackers()
-                    .stream()
-                    .map(userMapper::toResponse)
-                    .collect(Collectors.toList()));
-        }
-
-        if (shop.getTeams() != null) {
-            response.setTeams(shop.getTeams()
-                    .stream()
-                    .map(team -> new TeamResponse()
-                            .setId(team.getId())
-                            .setCode(team.getCode())
-                            .setName(team.getName())
-                            .setDescription(team.getDescription())
-                            .setCreatedAt(team.getCreatedAt())
-                            .setCreatedBy(team.getCreatedBy())
-                            .setUpdatedAt(team.getUpdatedAt())
-                            .setUpdatedBy(team.getUpdatedBy()))
-                    .collect(Collectors.toList()));
-        }
-
         return response;
     }
 
@@ -182,16 +159,6 @@ public class ShopMapperImpl implements ShopMapper {
             response.setConversionRate(dashboard.getConversionRate());
             response.setRevenue(dashboard.getRevenue());
         }
-
-//        response.setOrders(shop.getOrders()
-//                .stream()
-//                .map(orderMapper::toResponse)
-//                .collect(Collectors.toList()));
-//
-//        response.setListings(shop.getListings()
-//                .stream()
-//                .map(productMapper::toResponse)
-//                .collect(Collectors.toList()));
 
         DashboardResponse dashboard = new DashboardResponse()
                 .setToday(dashboardMapper.toResponse(shop.getTodayDashboard()))

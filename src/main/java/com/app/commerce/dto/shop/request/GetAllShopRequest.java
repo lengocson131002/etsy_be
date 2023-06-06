@@ -4,6 +4,8 @@ import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,6 +53,8 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
                 queryPredicates.add(cb.like(cb.lower(root.get(Shop.Fields.name)), "%" + query + "%"));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
+
+            criteriaQuery.distinct(true);
 
             return cb.and(predicates.toArray(new Predicate[0]));
 

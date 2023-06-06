@@ -21,5 +21,9 @@ public interface ProfileRepository extends JpaRepository<GoLoginProfile, Long>, 
 
     boolean existsByGoLoginProfileId(String goLoginProfileId);
 
+    @EntityGraph(attributePaths = {"shop"})
     Optional<GoLoginProfile> findByGoLoginProfileId(String goLoginProfileId);
+
+    @EntityGraph(attributePaths = {"shop"})
+    Optional<GoLoginProfile> findById(Long Id);
 }
