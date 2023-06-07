@@ -1,13 +1,17 @@
 package com.app.commerce.mappings.impl;
 
 import com.app.commerce.dto.profile.request.CreateGoLoginProfileIdRequest;
+import com.app.commerce.dto.profile.response.GoLoginProfileDetailResponse;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.dto.shop.request.GoLoginProfileDto;
+import com.app.commerce.dto.shop.response.ShopResponse;
 import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.mappings.ProfileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 
 @Service
@@ -48,7 +52,22 @@ public class ProfileMapperImpl implements ProfileMapper {
         if (profile == null) {
             return null;
         }
-        GoLoginProfileResponse response = new GoLoginProfileResponse()
+        return new GoLoginProfileResponse()
+                .setId(profile.getId())
+                .setGoLoginProfileId(profile.getGoLoginProfileId())
+                .setName(profile.getName())
+                .setCreatedDate(profile.getCreatedDate())
+                .setProxy(profile.getProxy())
+                .setNotes(profile.getNotes())
+                .setFolderName(profile.getFolderName());
+    }
+
+    @Override
+    public GoLoginProfileDetailResponse toDetailResponse(GoLoginProfile profile) {
+        if (profile == null) {
+            return null;
+        }
+        GoLoginProfileDetailResponse response = new GoLoginProfileDetailResponse()
                 .setId(profile.getId())
                 .setGoLoginProfileId(profile.getGoLoginProfileId())
                 .setName(profile.getName())
@@ -57,10 +76,16 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .setNotes(profile.getNotes())
                 .setFolderName(profile.getFolderName());
 
-        Shop shop = profile.getShop();
-        if (shop != null) {
-            response.setShopId(shop.getId());
-            response.setShopName(shop.getName());
+        if (profile.getShops() != null) {
+            response.setShops(profile.getShops().stream()
+                    .map(shop -> {
+                        ShopResponse shopResponse = new ShopResponse();
+                        shopResponse.setId(shop.getId());
+                        shopResponse.setName(shop.getName());
+                        shopResponse.setAvatar(shop.getAvatar());
+                        shopResponse.setStatus(shop.getStatus());
+                        return shopResponse;
+                    }).collect(Collectors.toList()));
         }
 
         return response;

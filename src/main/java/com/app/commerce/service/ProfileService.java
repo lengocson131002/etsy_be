@@ -4,6 +4,7 @@ import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.profile.request.CreateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.request.GetAllProfilesRequest;
 import com.app.commerce.dto.profile.request.UpdateGoLoginProfileIdRequest;
+import com.app.commerce.dto.profile.response.GoLoginProfileDetailResponse;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.entity.GoLoginProfile;
 
@@ -18,5 +19,5 @@ public interface ProfileService {
 
     void removeProfile(Long id);
 
-    GoLoginProfileResponse getProfile(Long id);
+    GoLoginProfileDetailResponse getProfile(Long id);
 }

@@ -26,7 +26,7 @@ public class GetAllProfilesRequest extends BasePageFilterRequest<GoLoginProfile>
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (teamIds != null) {
-                predicates.add(root.join(GoLoginProfile.Fields.shop)
+                predicates.add(root.join(GoLoginProfile.Fields.shops)
                         .join(Shop.Fields.teams)
                         .get(Team.Fields.id)
                         .in(teamIds));
@@ -36,8 +36,6 @@ public class GetAllProfilesRequest extends BasePageFilterRequest<GoLoginProfile>
                 List<Predicate> queryPredicates = new ArrayList<>();
 
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";
-                queryPredicates.add(cb.like(cb.lower(root.join(GoLoginProfile.Fields.shop).get(Shop.Fields.id)), queryPattern));
-                queryPredicates.add(cb.like(cb.lower(root.join(GoLoginProfile.Fields.shop).get(Shop.Fields.name)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.name)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(GoLoginProfile.Fields.goLoginProfileId)), queryPattern));
 

@@ -10,6 +10,8 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,8 +19,6 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class GoLoginProfileResponse {
-
-    public final static String COLLECTION_NAME = "go_login_profiles";
 
     private Long id;
 

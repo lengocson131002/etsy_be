@@ -6,6 +6,7 @@ import com.app.commerce.dto.common.response.StatusResponse;
 import com.app.commerce.dto.profile.request.CreateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.request.GetAllProfilesRequest;
 import com.app.commerce.dto.profile.request.UpdateGoLoginProfileIdRequest;
+import com.app.commerce.dto.profile.response.GoLoginProfileDetailResponse;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.entity.Role;
@@ -61,8 +62,8 @@ public class ProfileController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<GoLoginProfileResponse> getProfile(@PathVariable Long id) {
-        GoLoginProfileResponse response = profileService.getProfile(id);
+    public ResponseEntity<GoLoginProfileDetailResponse> getProfile(@PathVariable Long id) {
+        GoLoginProfileDetailResponse response = profileService.getProfile(id);
         return ResponseEntity.ok(response);
     }
 

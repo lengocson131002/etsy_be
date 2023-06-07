@@ -16,14 +16,13 @@ import java.util.Optional;
 public interface ProfileRepository extends JpaRepository<GoLoginProfile, Long>, JpaSpecificationExecutor<GoLoginProfile> {
 
     @Override
-    @EntityGraph(attributePaths = {"shop"})
     Page<GoLoginProfile> findAll(Specification<GoLoginProfile> spec, Pageable pageable);
 
     boolean existsByGoLoginProfileId(String goLoginProfileId);
 
-    @EntityGraph(attributePaths = {"shop"})
+    @EntityGraph(attributePaths = {"shops"})
     Optional<GoLoginProfile> findByGoLoginProfileId(String goLoginProfileId);
 
-    @EntityGraph(attributePaths = {"shop"})
+    @EntityGraph(attributePaths = {"shops"})
     Optional<GoLoginProfile> findById(Long Id);
 }

@@ -52,7 +52,7 @@ public class Shop extends BaseEntity {
     )
     private Set<User> trackers;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private GoLoginProfile profile;
 
@@ -177,7 +177,6 @@ public class Shop extends BaseEntity {
 
     public Shop setProfile(GoLoginProfile profile) {
         this.profile = profile;
-        this.profile.setShop(this);
         return this;
     }
 

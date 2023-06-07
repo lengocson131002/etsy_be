@@ -4,6 +4,7 @@ import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.profile.request.CreateGoLoginProfileIdRequest;
 import com.app.commerce.dto.profile.request.GetAllProfilesRequest;
 import com.app.commerce.dto.profile.request.UpdateGoLoginProfileIdRequest;
+import com.app.commerce.dto.profile.response.GoLoginProfileDetailResponse;
 import com.app.commerce.dto.profile.response.GoLoginProfileResponse;
 import com.app.commerce.entity.GoLoginProfile;
 import com.app.commerce.enums.ResponseCode;
@@ -35,6 +36,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @Transactional
     public void createProfile(CreateGoLoginProfileIdRequest request) {
         GoLoginProfile profile = mapper.toEntity(request);
         if (profileRepository.existsByGoLoginProfileId(profile.getGoLoginProfileId())) {
@@ -48,6 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @Transactional
     public void updateProfile(Long id, UpdateGoLoginProfileIdRequest request) {
         GoLoginProfile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.PROFILE_ERROR_NOT_FOUND));
@@ -71,10 +74,11 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    @Transactional
     public void removeProfile(Long id) {
         GoLoginProfile profile = profileRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.PROFILE_ERROR_NOT_FOUND));
-        if (profile.getShop() != null) {
+        if (profile.getShops() != null && !profile.getShops().isEmpty()) {
             throw new ApiException(ResponseCode.PROFILE_ERROR_REFERENCED);
         }
 
@@ -82,11 +86,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public GoLoginProfileResponse getProfile(Long id) {
+    @Transactional
+    public GoLoginProfileDetailResponse getProfile(Long id) {
         GoLoginProfile profile = profileRepository
                 .findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.PROFILE_ERROR_NOT_FOUND));
 
-        return mapper.toResponse(profile);
+        return mapper.toDetailResponse(profile);
     }
 }
