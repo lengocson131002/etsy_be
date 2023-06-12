@@ -8,6 +8,8 @@ import com.app.commerce.dto.team.response.TeamDetailResponse;
 import com.app.commerce.dto.team.response.TeamResponse;
 import com.app.commerce.entity.Team;
 
+import java.util.List;
+
 public interface TeamService {
 
     TeamResponse createTeam(CreateTeamRequest request);
@@ -27,4 +29,13 @@ public interface TeamService {
     void removeStaff(Long teamId, Long staffId);
 
     void removeTeam(Long id);
+
+    void addShops(Long teamId, List<String> shopIds);
+
+    void removeShops(Long teamId, List<String> shopIds);
+
+    void addStaffs(Long teamId, List<Long> staffIds);
+
+    void removeStaffs(Long teamId, List<Long> staffIds);
+
 }

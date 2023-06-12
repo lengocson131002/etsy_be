@@ -21,6 +21,9 @@ public class GetAllTeamRequest extends BasePageFilterRequest<Team> {
     @Override
     public Specification<Team> getSpecification() {
         return (root, criteriaQuery, cb) -> {
+
+            criteriaQuery.distinct(true);
+
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";

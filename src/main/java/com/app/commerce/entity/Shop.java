@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -43,6 +46,8 @@ public class Shop extends BaseEntity {
             joinColumns = @JoinColumn(name = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "team_id")
     )
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Set<Team> teams;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -50,6 +55,8 @@ public class Shop extends BaseEntity {
             joinColumns = @JoinColumn(name = "shop_id"),
             inverseJoinColumns = @JoinColumn(name = "staff_id")
     )
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
     private Set<User> trackers;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

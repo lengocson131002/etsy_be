@@ -53,6 +53,12 @@ public enum ResponseCode {
 
     TEAM_ERROR_SHOP_ASSIGNED(805, "Shop was assigned"),
 
+    TEAM_ERROR_SHOP_NOT_ASSIGNED(806, "Shop was not assigned"),
+
+    TEAM_ERROR_STAFF_NOT_ASSIGNED(807, "Staff was not assigned"),
+
+
+
     // Conversation
     CONVERSATION_ERROR_NOT_FOUND(901, "Conversation not found")
 ;

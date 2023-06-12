@@ -18,14 +18,20 @@ import com.app.commerce.repository.TeamRepository;
 import com.app.commerce.repository.UserRepository;
 import com.app.commerce.service.TeamService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TeamServiceImpl implements TeamService {
 
     private final TeamRepository teamRepository;
@@ -112,7 +118,6 @@ public class TeamServiceImpl implements TeamService {
 
         team.addShop(shop);
         teamRepository.save(team);
-
     }
 
     @Override
@@ -163,10 +168,109 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    @Transactional
     public void removeTeam(Long id) {
         Team team = teamRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
 
         teamRepository.delete(team);
+    }
+
+    @Override
+    @Transactional
+    public void addShops(Long teamId, List<String> shopIds) {
+        // get current shop
+        Team team = teamRepository
+                .findById(teamId)
+                .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+
+        Set<Shop> shops = team.getShops();
+
+        shopIds.forEach(shopId -> {
+            // get shop
+            Shop shop = shopRepository.findById(shopId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+            if (shops.stream().anyMatch(s -> Objects.equals(shop.getId(), s.getId()))) {
+                throw new ApiException(ResponseCode.TEAM_ERROR_SHOP_ASSIGNED);
+            }
+
+            team.addShop(shop);
+        });
+
+        teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public void removeShops(Long teamId, List<String> shopIds) {
+        // get current shop
+        Team team = teamRepository
+                .findById(teamId)
+                .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+
+        Set<Shop> shops = team.getShops();
+
+        shopIds.forEach(shopId -> {
+            // get shop
+            Shop shop = shopRepository.findById(shopId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.SHOP_ERROR_NOT_FOUND));
+
+            if (shops.stream().noneMatch(s -> Objects.equals(shop.getId(), s.getId()))) {
+                throw new ApiException(ResponseCode.TEAM_ERROR_SHOP_NOT_ASSIGNED);
+            }
+
+            team.removeShop(shop);
+        });
+
+        teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public void addStaffs(Long teamId, List<Long> staffIds) {
+        // get current shop
+        Team team = teamRepository
+                .findById(teamId)
+                .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+
+        Set<User> staffs = team.getStaffs();
+
+        staffIds.forEach(staffId -> {
+            User staff = userRepository.findById(staffId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND));
+
+            if (staffs.stream().anyMatch(s -> Objects.equals(staff.getId(), s.getId()))) {
+                throw new ApiException(ResponseCode.TEAM_ERROR_STAFF_ASSIGNED);
+            }
+
+            team.addStaff(staff);
+        });
+
+        teamRepository.save(team);
+    }
+
+    @Override
+    @Transactional
+    public void removeStaffs(Long teamId, List<Long> staffIds) {
+        // get current shop
+        Team team = teamRepository
+                .findById(teamId)
+                .orElseThrow(() -> new ApiException(ResponseCode.TEAM_ERROR_NOT_FOUND));
+
+        Set<User> staffs = team.getStaffs();
+
+        staffIds.forEach(staffId -> {
+            User staff = userRepository.findById(staffId)
+                    .orElseThrow(() -> new ApiException(ResponseCode.STAFF_ERROR_NOT_FOUND));
+
+            if (staffs.stream().noneMatch(s -> Objects.equals(staff.getId(), s.getId()))) {
+                throw new ApiException(ResponseCode.TEAM_ERROR_STAFF_NOT_ASSIGNED);
+            }
+
+            team.removeStaff(staff);
+        });
+
+        teamRepository.save(team);
     }
 }

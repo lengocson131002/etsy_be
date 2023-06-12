@@ -3,9 +3,7 @@ package com.app.commerce.controller;
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusResponse;
-import com.app.commerce.dto.team.request.CreateTeamRequest;
-import com.app.commerce.dto.team.request.GetAllTeamRequest;
-import com.app.commerce.dto.team.request.UpdateTeamRequest;
+import com.app.commerce.dto.team.request.*;
 import com.app.commerce.dto.team.response.TeamDetailResponse;
 import com.app.commerce.dto.team.response.TeamResponse;
 import com.app.commerce.entity.BaseEntity;
@@ -84,5 +82,29 @@ public class TeamController {
         }
         PageResponse<Team, TeamResponse> response = teamService.getTeams(request);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("{teamId}/shops")
+    public ResponseEntity<StatusResponse> assignShops(@PathVariable Long teamId, @Valid @RequestBody AssignShopRequest request) {
+        teamService.addShops(teamId, request.getShopIds());
+        return ResponseEntity.ok(new StatusResponse(true));
+    }
+
+    @DeleteMapping("{teamId}/shops")
+    public ResponseEntity<StatusResponse> removeShops(@PathVariable Long teamId, @Valid @RequestBody RemoveShopRequest request) {
+        teamService.removeShops(teamId, request.getShopIds());
+        return ResponseEntity.ok(new StatusResponse(true));
+    }
+
+    @PutMapping("{teamId}/staffs")
+    public ResponseEntity<StatusResponse> assignStaffs(@PathVariable Long teamId, @Valid @RequestBody AssignStaffRequest request) {
+        teamService.addStaffs(teamId, request.getStaffIds());
+        return ResponseEntity.ok(new StatusResponse(true));
+    }
+
+    @DeleteMapping("{teamId}/staffs")
+    public ResponseEntity<StatusResponse> assignStaffs(@PathVariable Long teamId, @Valid @RequestBody RemoveStaffRequest request) {
+        teamService.removeStaffs(teamId, request.getStaffIds());
+        return ResponseEntity.ok(new StatusResponse(true));
     }
 }

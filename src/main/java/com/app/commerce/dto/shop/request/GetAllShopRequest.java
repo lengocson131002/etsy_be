@@ -4,9 +4,7 @@ import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +28,8 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
 
     private List<Long> teamIds;
 
+    private List<Long> exceptTeamIds;
+
     @Override
     public Specification<Shop> getSpecification() {
         return (root, criteriaQuery, cb) -> {
@@ -49,6 +49,21 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
             if (teamIds != null) {
                 predicates.add(root.join(Shop.Fields.teams).get(Team.Fields.id).in(teamIds));
             }
+
+            if (exceptTeamIds != null) {
+                exceptTeamIds.forEach(id -> {
+                    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+                    Root<Shop> subqueryRoot = subquery.from(Shop.class);
+                    subquery.select(subqueryRoot.get(Shop.Fields.id));
+                    subquery.where(cb.and(
+                            cb.equal(subqueryRoot.join(Shop.Fields.teams).get(Team.Fields.id), id),
+                            cb.equal(subqueryRoot.get(Shop.Fields.id), root.get(Shop.Fields.id))
+                    ));
+                    predicates.add(cb.not(cb.exists(subquery)));
+                });
+            }
+
+            criteriaQuery.distinct(true);
 
             if (StringUtils.isNotBlank(query)) {
                 List<Predicate> queryPredicates = new ArrayList<>();

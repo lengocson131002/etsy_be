@@ -2,11 +2,14 @@ package com.app.commerce.dto.staff.request;
 
 import com.app.commerce.dto.common.request.BasePageFilterRequest;
 import com.app.commerce.entity.Role;
+import com.app.commerce.entity.Shop;
 import com.app.commerce.entity.Team;
 import com.app.commerce.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,10 +31,12 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
 
     private String role;
 
-    private Long teamId;
+    private List<Long> teamIds;
 
     @JsonIgnore
     private List<String> exceptedRoles;
+
+    private List<Long> exceptTeamIds;
 
     @Override
     public Specification<User> getSpecification() {
@@ -48,8 +53,8 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
                 });
             }
 
-            if (teamId != null) {
-                predicates.add(cb.equal(root.join(User.Fields.teams).get(Team.Fields.id), teamId));
+            if (teamIds != null) {
+                predicates.add(root.join(User.Fields.teams).get(Team.Fields.id).in(teamIds));
             }
 
             List<Predicate> queryPredicates = new ArrayList<>();
@@ -60,6 +65,19 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
                 queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.phoneNumber)), "%" + query + "%"));
                 queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.email)), "%" + query + "%"));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
+            }
+
+            if (exceptTeamIds != null) {
+                exceptTeamIds.forEach(id -> {
+                    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+                    Root<User> subqueryRoot = subquery.from(User.class);
+                    subquery.select(subqueryRoot.get(User.Fields.id));
+                    subquery.where(cb.and(
+                            cb.equal(subqueryRoot.join(User.Fields.teams).get(Team.Fields.id), id),
+                            cb.equal(subqueryRoot.get(User.Fields.id), root.get(User.Fields.id))
+                    ));
+                    predicates.add(cb.not(cb.exists(subquery)));
+                });
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

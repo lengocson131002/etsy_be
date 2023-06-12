@@ -7,8 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = Team.COLLECTION_NAME)
@@ -18,6 +23,12 @@ import java.util.*;
 @NoArgsConstructor
 @Accessors(chain = true)
 @FieldNameConstants
+@NamedEntityGraph(
+        name = "team.fetch", attributeNodes = {
+        @NamedAttributeNode("shops"),
+        @NamedAttributeNode("staffs")
+    }
+)
 public class Team extends BaseEntity {
     public static final String COLLECTION_NAME = "teams";
     @Id
@@ -26,17 +37,21 @@ public class Team extends BaseEntity {
     private String name;
     private String code;
     private String description;
+    @ManyToMany(mappedBy = "teams")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
+    private Set<Shop> shops;
+
+    @ManyToMany(mappedBy = "teams")
+    @Fetch(FetchMode.SELECT)
+    @BatchSize(size = 50)
+    private Set<User> staffs;
 
     public Team(String name, String code, String description) {
         this.name = name;
         this.code = code;
         this.description = description;
     }
-    @ManyToMany(mappedBy = "teams")
-    private Set<Shop> shops;
-
-    @ManyToMany(mappedBy = "teams")
-    private Set<User> staffs;
 
     @PreRemove
     private void preRemove() {
@@ -44,7 +59,7 @@ public class Team extends BaseEntity {
             s.getTeams().removeIf(team -> Objects.equals(team.getId(), this.getId()));
         }
 
-        for (User staff: staffs) {
+        for (User staff : staffs) {
             staff.getTeams().removeIf(team -> Objects.equals(team.getId(), this.getId()));
         }
     }
@@ -55,7 +70,7 @@ public class Team extends BaseEntity {
         }
         if (shops.stream().noneMatch(s -> Objects.equals(s.getId(), shop.getId()))) {
             shops.add(shop);
-//            shop.setTeam(this);
+            shop.getTeams().add(this);
         }
     }
 
@@ -64,7 +79,7 @@ public class Team extends BaseEntity {
             return;
         }
         shops.removeIf(s -> Objects.equals(s.getId(), shop.getId()));
-//        shop.setTeam(null);
+        shop.getTeams().removeIf(t -> Objects.equals(t.getId(), this.id));
     }
 
     public void addStaff(User staff) {
@@ -73,7 +88,7 @@ public class Team extends BaseEntity {
         }
         if (staffs.stream().noneMatch(s -> Objects.equals(s.getId(), staff.getId()))) {
             staffs.add(staff);
-//            staff.setTeam(this);
+            staff.getTeams().add(this);
         }
     }
 
@@ -82,6 +97,6 @@ public class Team extends BaseEntity {
             return;
         }
         staffs.removeIf(s -> Objects.equals(s.getId(), staff.getId()));
-//        staff.setTeam(null);
+        staff.getTeams().removeIf(t -> Objects.equals(t.getId(), this.id));
     }
 }
