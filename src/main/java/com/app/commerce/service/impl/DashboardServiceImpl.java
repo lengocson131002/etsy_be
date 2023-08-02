@@ -1,11 +1,14 @@
 package com.app.commerce.service.impl;
 
 import com.app.commerce.dto.dashboard.response.DashboardTotalResponse;
+import com.app.commerce.dto.dashboard.response.ProfileStatusResponse;
 import com.app.commerce.enums.DashboardType;
 import com.app.commerce.repository.DashboardRepository;
 import com.app.commerce.repository.ListingRepository;
+import com.app.commerce.repository.ProfileRepository;
 import com.app.commerce.repository.ShopRepository;
 import com.app.commerce.repository.projections.DashboardRevenueProjection;
+import com.app.commerce.repository.projections.ProfileStatusProjection;
 import com.app.commerce.repository.projections.StatusCountProjection;
 import com.app.commerce.service.DashboardService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ public class DashboardServiceImpl implements DashboardService {
     private final ListingRepository listingRepository;
 
     private final ShopRepository shopRepository;
+
+    private final ProfileRepository profileRepository;
 
     @Override
     @Transactional
@@ -61,13 +66,23 @@ public class DashboardServiceImpl implements DashboardService {
             statusCount.add(new DashboardTotalResponse.DashboardShopStatusCountResponse(status, count));
         });
 
+        ProfileStatusProjection profileStatusProjection = profileRepository.getProfileStatues();
+        ProfileStatusResponse profileStatusResponse = new ProfileStatusResponse()
+                .setLogoutCount(profileStatusProjection.getLogoutCount())
+                .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
+                .setDeletedCount(profileStatusProjection.getDeletedCount())
+                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setEmptyCount(profileStatusProjection.getEmptyCount())
+                .setSyncCount(profileStatusProjection.getSyncCount());
+
         return new DashboardTotalResponse()
                 .setShopCount(shopCount)
                 .setListingCount(listingCount)
                 .setOrderCount(orderCount)
                 .setVisitCount(visitCount)
                 .setRevenues(revenues)
-                .setStatusCount(statusCount);
+                .setStatusCount(statusCount)
+                .setProfileStatuses(profileStatusResponse);
     }
 
     @Override
@@ -103,12 +118,23 @@ public class DashboardServiceImpl implements DashboardService {
             statusCount.add(new DashboardTotalResponse.DashboardShopStatusCountResponse(statusProjection.getStatus(), statusProjection.getCount()));
         });
 
+
+        ProfileStatusProjection profileStatusProjection = profileRepository.getProfileStatues();
+        ProfileStatusResponse profileStatusResponse = new ProfileStatusResponse()
+                .setLogoutCount(profileStatusProjection.getLogoutCount())
+                .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
+                .setDeletedCount(profileStatusProjection.getDeletedCount())
+                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setEmptyCount(profileStatusProjection.getEmptyCount())
+                .setSyncCount(profileStatusProjection.getSyncCount());
+
         return new DashboardTotalResponse()
                 .setShopCount(shopCount)
                 .setListingCount(listingCount)
                 .setOrderCount(orderCount)
                 .setVisitCount(visitCount)
                 .setRevenues(revenues)
-                .setStatusCount(statusCount);
+                .setStatusCount(statusCount)
+                .setProfileStatuses(profileStatusResponse);
     }
 }

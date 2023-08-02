@@ -43,4 +43,14 @@ public class GoLoginProfile {
 
     @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
     private List<Shop> shops;
+
+    private Boolean isLogOut;
+
+    private Boolean isFailedProxy;
+
+    private Boolean isDeleted;
+
+    private Boolean isTooManyRequest;
+
+    private Boolean isEmpty;
 }

@@ -24,6 +24,8 @@ public class DashboardTotalResponse {
 
     private List<DashboardShopStatusCountResponse> statusCount = new ArrayList<>();
 
+    private ProfileStatusResponse profileStatuses;
+
     @Getter
     @Setter
     @AllArgsConstructor
