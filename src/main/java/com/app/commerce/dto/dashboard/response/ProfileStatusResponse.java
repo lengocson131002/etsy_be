@@ -12,11 +12,11 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ProfileStatusResponse {
-    private Integer logoutCount;
-    private Integer failedProxyCount;
-    private Integer deletedCount;
-    private Integer tooManyRequestCount;
-    private Integer emptyCount;
-    private Integer syncCount;
+    private Integer logout;
+    private Integer failedProxy;
+    private Integer deleted;
+    private Integer tooManyRequest;
+    private Integer empty;
+    private Integer sync;
 
 }

@@ -68,12 +68,12 @@ public class DashboardServiceImpl implements DashboardService {
 
         ProfileStatusProjection profileStatusProjection = profileRepository.getProfileStatues();
         ProfileStatusResponse profileStatusResponse = new ProfileStatusResponse()
-                .setLogoutCount(profileStatusProjection.getLogoutCount())
-                .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
-                .setDeletedCount(profileStatusProjection.getDeletedCount())
-                .setTooManyRequestCount(profileStatusProjection.getTooManyRequestCount())
-                .setEmptyCount(profileStatusProjection.getEmptyCount())
-                .setSyncCount(profileStatusProjection.getSyncCount());
+                .setLogout(profileStatusProjection.getLogoutCount())
+                .setFailedProxy(profileStatusProjection.getFailedProxyCount())
+                .setDeleted(profileStatusProjection.getDeletedCount())
+                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setEmpty(profileStatusProjection.getEmptyCount())
+                .setSync(profileStatusProjection.getSyncCount());
 
         return new DashboardTotalResponse()
                 .setShopCount(shopCount)
@@ -121,12 +121,12 @@ public class DashboardServiceImpl implements DashboardService {
 
         ProfileStatusProjection profileStatusProjection = profileRepository.getProfileStatues();
         ProfileStatusResponse profileStatusResponse = new ProfileStatusResponse()
-                .setLogoutCount(profileStatusProjection.getLogoutCount())
-                .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
-                .setDeletedCount(profileStatusProjection.getDeletedCount())
-                .setTooManyRequestCount(profileStatusProjection.getTooManyRequestCount())
-                .setEmptyCount(profileStatusProjection.getEmptyCount())
-                .setSyncCount(profileStatusProjection.getSyncCount());
+                .setLogout(profileStatusProjection.getLogoutCount())
+                .setFailedProxy(profileStatusProjection.getFailedProxyCount())
+                .setDeleted(profileStatusProjection.getDeletedCount())
+                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setEmpty(profileStatusProjection.getEmptyCount())
+                .setSync(profileStatusProjection.getSyncCount());
 
         return new DashboardTotalResponse()
                 .setShopCount(shopCount)
