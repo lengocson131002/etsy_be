@@ -15,7 +15,7 @@ public class ProfileStatusResponse {
     private Integer logoutCount;
     private Integer failedProxyCount;
     private Integer deletedCount;
-    private Integer tooManyRequest;
+    private Integer tooManyRequestCount;
     private Integer emptyCount;
     private Integer syncCount;
 

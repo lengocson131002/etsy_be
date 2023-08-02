@@ -71,7 +71,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .setLogoutCount(profileStatusProjection.getLogoutCount())
                 .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
                 .setDeletedCount(profileStatusProjection.getDeletedCount())
-                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setTooManyRequestCount(profileStatusProjection.getTooManyRequestCount())
                 .setEmptyCount(profileStatusProjection.getEmptyCount())
                 .setSyncCount(profileStatusProjection.getSyncCount());
 
@@ -124,7 +124,7 @@ public class DashboardServiceImpl implements DashboardService {
                 .setLogoutCount(profileStatusProjection.getLogoutCount())
                 .setFailedProxyCount(profileStatusProjection.getFailedProxyCount())
                 .setDeletedCount(profileStatusProjection.getDeletedCount())
-                .setTooManyRequest(profileStatusProjection.getTooManyRequestCount())
+                .setTooManyRequestCount(profileStatusProjection.getTooManyRequestCount())
                 .setEmptyCount(profileStatusProjection.getEmptyCount())
                 .setSyncCount(profileStatusProjection.getSyncCount());
 
