@@ -33,6 +33,8 @@ public enum ResponseCode {
     //ORDER
     ORDER_ERROR_NOT_FOUND(601, "Order not found"),
 
+    ORDER_ERROR_EXPORT_DATE_RANGE_REQUIRED(602, "Please select date range to export orders"),
+
     //PROFILE
     PROFILE_ERROR_EXISTED(701, "Profile existed"),
 

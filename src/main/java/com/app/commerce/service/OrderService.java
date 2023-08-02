@@ -12,6 +12,8 @@ import java.util.List;
 public interface OrderService {
     PageResponse<Order, OrderResponse> getAllOrder(GetAllOrdersRequest request);
 
+    List<Order> getOrders(GetAllOrdersRequest request);
+
     OrderDetailResponse getOrder(Long id);
 
     List<String> getAllStatuses();

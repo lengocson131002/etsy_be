@@ -33,6 +33,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> getOrders(GetAllOrdersRequest request) {
+        return orderRepository.findAll(request.getSpecification(), request.getPageable().getSort());
+    }
+
+    @Override
     public OrderDetailResponse getOrder(Long id) {
         Order order = orderRepository
                 .findById(id)

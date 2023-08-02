@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
-
     private String shopId;
     private String query;
     private String status;

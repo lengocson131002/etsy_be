@@ -1,9 +1,11 @@
 package com.app.commerce.controller;
 
+import com.app.commerce.config.BaseConstants;
 import com.app.commerce.config.OpenApiConfig;
 import com.app.commerce.dto.common.response.ListResponse;
 import com.app.commerce.dto.common.response.PageResponse;
 import com.app.commerce.dto.common.response.StatusCountResponse;
+import com.app.commerce.dto.excel.OrderExcel;
 import com.app.commerce.dto.order.request.GetAllOrdersRequest;
 import com.app.commerce.dto.order.response.OrderDetailResponse;
 import com.app.commerce.dto.order.response.OrderResponse;
@@ -14,17 +16,20 @@ import com.app.commerce.enums.ResponseCode;
 import com.app.commerce.exception.ApiException;
 import com.app.commerce.service.AuthenticationService;
 import com.app.commerce.service.OrderService;
+import com.app.commerce.util.DateTime;
+import com.app.commerce.util.ExcelExporter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,6 +39,7 @@ import java.util.stream.Collectors;
 public class OrderController {
 
     private final OrderService orderService;
+    private final ExcelExporter excelExporter;
 
     private final AuthenticationService authenticationService;
 
@@ -54,12 +60,50 @@ public class OrderController {
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {
-            request.setSortBy(Order.Fields.orderTime);
+            request.setSortBy("shopLastSyncAt");
             request.setSortDir(Sort.Direction.DESC);
         }
 
         PageResponse<Order, OrderResponse> response = orderService.getAllOrder(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("export")
+    @Transactional
+    public void exportOrders(@Valid @ParameterObject GetAllOrdersRequest request, HttpServletResponse response) {
+        if (request.getFrom() == null || request.getTo() == null) {
+            throw new ApiException(ResponseCode.ORDER_ERROR_EXPORT_DATE_RANGE_REQUIRED);
+        }
+
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy("shopLastSyncAt");
+            request.setSortDir(Sort.Direction.DESC);
+        }
+
+        List<Order> orders = orderService.getOrders(request);
+        List<OrderExcel> orderExcels = new ArrayList<>();
+        for (int i = 0; i < orders.size(); i++)  {
+            orderExcels.add(new OrderExcel(i, orders.get(i)));
+        }
+
+        Map<String, String> columnHeaders = new LinkedHashMap<>();
+        columnHeaders.put("no", "N.o");
+        columnHeaders.put("etsyOrderId", "Etsy order ID");
+        columnHeaders.put("image", "Image");
+        columnHeaders.put("orderTime", "Order time");
+        columnHeaders.put("progressStep", "Progress step");
+        columnHeaders.put("buyerName", "Buyer Name");
+        columnHeaders.put("buyerEmail", "Buyer Email");
+        columnHeaders.put("itemCount", "Item count");
+        columnHeaders.put("total", "Total");
+        columnHeaders.put("tax", "Tax");
+
+        excelExporter.exportToExcel(
+                orderExcels,
+                columnHeaders,
+                String.format("list-order-%s-%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT),
+                        DateTime.toString(request.getTo(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT)),
+                response);
     }
 
     @GetMapping("/statuses")
