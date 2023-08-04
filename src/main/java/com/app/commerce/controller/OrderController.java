@@ -24,11 +24,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -98,12 +103,9 @@ public class OrderController {
         columnHeaders.put("total", "Total");
         columnHeaders.put("tax", "Tax");
 
-        excelExporter.exportToExcel(
-                orderExcels,
-                columnHeaders,
-                String.format("list-order-%s-%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT),
-                        DateTime.toString(request.getTo(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT)),
-                response);
+        String fileName = String.format("list-orders-%s-%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT),
+                        DateTime.toString(request.getTo(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT));
+        excelExporter.exportToExcel(orderExcels,columnHeaders, fileName, response);
     }
 
     @GetMapping("/statuses")
