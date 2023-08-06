@@ -36,4 +36,6 @@ public class GoLoginProfileDetailResponse {
 
     private List<ShopResponse> shops = new ArrayList<>();
 
+    private List<String> status;
+
 }

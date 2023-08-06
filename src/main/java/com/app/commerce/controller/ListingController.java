@@ -17,7 +17,9 @@ import com.app.commerce.service.ListingService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +51,11 @@ public class ListingController {
                     .stream()
                     .map(Team::getId)
                     .collect(Collectors.toList()));
+        }
+
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy("shopLastSyncAt");
+            request.setSortDir(Sort.Direction.DESC);
         }
 
         PageResponse<Listing, ListingResponse> response = listingService.getAllListings(request);

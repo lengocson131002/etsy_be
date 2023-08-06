@@ -26,4 +26,5 @@ public class ConversationResponse {
     private String shopId;
 
     private String shopName;
+
 }

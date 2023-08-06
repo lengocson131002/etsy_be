@@ -36,7 +36,7 @@ public class StaffController {
     public ResponseEntity<PageResponse<User, UserResponse>> getAllStaffs(@Valid @ParameterObject GetAllStaffRequest request) {
 //        request.setExceptedRoles(List.of(BaseConstants.ROLE_ADMIN_CODE.toUpperCase()));
         if (StringUtils.isEmpty(request.getSortBy())) {
-            request.setSortBy(BaseEntity.Fields.createdAt);
+            request.setSortBy(BaseEntity.Fields.updatedAt);
             request.setSortDir(Sort.Direction.DESC);
         }
 

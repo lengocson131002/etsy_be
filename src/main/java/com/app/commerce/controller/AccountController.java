@@ -20,7 +20,9 @@ import com.app.commerce.service.StaffService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,6 +53,11 @@ public class AccountController {
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getMyTrackings(@Valid @ParameterObject GetAllShopRequest request) {
         User currentUser = authService.getCurrentAuthenticatedAccount()
                 .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED.value(), "Unauthorized"));
+
+        if (StringUtils.isBlank(request.getSortBy())) {
+            request.setSortBy(Shop.Fields.lastSyncAt);
+            request.setSortDir(Sort.Direction.DESC);
+        }
 
         request.setTrackerId(currentUser.getId());
         PageResponse<Shop, ShopResponse> trackings = shopService.getAllShops(request);

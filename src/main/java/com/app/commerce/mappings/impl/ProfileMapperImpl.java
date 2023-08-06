@@ -11,6 +11,8 @@ import com.app.commerce.mappings.ProfileMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -52,6 +54,8 @@ public class ProfileMapperImpl implements ProfileMapper {
         if (profile == null) {
             return null;
         }
+
+
         return new GoLoginProfileResponse()
                 .setId(profile.getId())
                 .setGoLoginProfileId(profile.getGoLoginProfileId())
@@ -59,7 +63,8 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .setCreatedDate(profile.getCreatedDate())
                 .setProxy(profile.getProxy())
                 .setNotes(profile.getNotes())
-                .setFolderName(profile.getFolderName());
+                .setFolderName(profile.getFolderName())
+                .setStatus(getStatus(profile));
     }
 
     @Override
@@ -74,7 +79,8 @@ public class ProfileMapperImpl implements ProfileMapper {
                 .setCreatedDate(profile.getCreatedDate())
                 .setProxy(profile.getProxy())
                 .setNotes(profile.getNotes())
-                .setFolderName(profile.getFolderName());
+                .setFolderName(profile.getFolderName())
+                .setStatus(getStatus(profile));
 
         if (profile.getShops() != null) {
             response.setShops(profile.getShops().stream()
@@ -89,5 +95,29 @@ public class ProfileMapperImpl implements ProfileMapper {
         }
 
         return response;
+    }
+
+    private List<String> getStatus(GoLoginProfile profile) {
+        List<String> statuses = new ArrayList<>();
+        if (profile.getIsLogOut()) {
+            statuses.add("Logout");
+        }
+        if (profile.getIsDeleted()) {
+            statuses.add("Deleted");
+        }
+
+        if (profile.getIsEmpty()) {
+            statuses.add("Empty");
+        }
+
+        if (profile.getIsFailedProxy()) {
+            statuses.add("Failed proxy");
+        }
+
+        if (profile.getIsTooManyRequest()) {
+            statuses.add("Too many request");
+        }
+
+        return statuses;
     }
 }

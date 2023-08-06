@@ -77,7 +77,7 @@ public class TeamController {
     @GetMapping
     public ResponseEntity<PageResponse<Team, TeamResponse>> getAllTeams(@Valid @ParameterObject GetAllTeamRequest request) {
         if (StringUtils.isBlank(request.getSortBy())) {
-            request.setSortBy(BaseEntity.Fields.createdAt);
+            request.setSortBy(BaseEntity.Fields.updatedAt);
             request.setSortDir(Sort.Direction.DESC);
         }
         PageResponse<Team, TeamResponse> response = teamService.getTeams(request);

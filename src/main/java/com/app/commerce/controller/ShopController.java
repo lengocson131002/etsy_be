@@ -28,6 +28,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,7 +72,8 @@ public class ShopController {
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {
-            request.setSortBy(Shop.Fields.openedDate);
+            request.setSortBy(Shop.Fields.lastSyncAt);
+            request.setSortDir(Sort.Direction.DESC);
         }
 
         PageResponse<Shop, ShopResponse> response = shopService.getAllShops(request);

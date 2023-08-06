@@ -37,4 +37,7 @@ public class GoLoginProfileResponse {
     private String shopId;
 
     private String shopName;
+
+    private List<String> status;
+
 }
