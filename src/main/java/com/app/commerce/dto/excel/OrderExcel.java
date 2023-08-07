@@ -29,7 +29,7 @@ public class OrderExcel {
     private BigDecimal total;
     private BigDecimal tax;
     private String etsyOrderId;
-
+    private String currency;
     public OrderExcel(int index, Order order) {
         no = index;
         image = order.getImage();
@@ -42,5 +42,6 @@ public class OrderExcel {
         total = order.getOrderTotal();
         tax = order.getTax();
         etsyOrderId = order.getEtsyOrderId();
+        currency = order.getShop().getCurrencySymbol();
     }
 }

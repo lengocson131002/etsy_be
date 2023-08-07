@@ -24,10 +24,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,7 +77,7 @@ public class OrderController {
 
     @GetMapping("export")
     @Transactional
-    public void exportOrders(@Valid @ParameterObject GetAllOrdersRequest request, HttpServletResponse response) {
+    public ResponseEntity<ByteArrayResource> exportOrders(@Valid @ParameterObject GetAllOrdersRequest request, HttpServletResponse response) {
         if (request.getFrom() == null || request.getTo() == null) {
             throw new ApiException(ResponseCode.ORDER_ERROR_EXPORT_DATE_RANGE_REQUIRED);
         }
@@ -94,7 +96,6 @@ public class OrderController {
         Map<String, String> columnHeaders = new LinkedHashMap<>();
         columnHeaders.put("no", "N.o");
         columnHeaders.put("etsyOrderId", "Etsy order ID");
-        columnHeaders.put("image", "Image");
         columnHeaders.put("orderTime", "Order time");
         columnHeaders.put("progressStep", "Progress step");
         columnHeaders.put("buyerName", "Buyer Name");
@@ -102,10 +103,17 @@ public class OrderController {
         columnHeaders.put("itemCount", "Item count");
         columnHeaders.put("total", "Total");
         columnHeaders.put("tax", "Tax");
+        columnHeaders.put("currency", "Currency");
 
         String fileName = String.format("list-orders-%s-%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT),
                         DateTime.toString(request.getTo(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT));
-        excelExporter.exportToExcel(orderExcels,columnHeaders, fileName, response);
+        ByteArrayResource byteArrayResource = new ByteArrayResource(excelExporter.exportToExcel(orderExcels,columnHeaders).readAllBytes());
+
+        HttpHeaders header = new HttpHeaders();
+        header.setContentType(new MediaType("application", "force-download"));
+        header.set(HttpHeaders.CONTENT_DISPOSITION, String.format("attachment; filename=%s", fileName));
+
+        return new ResponseEntity<>(byteArrayResource, header, HttpStatus.CREATED);
     }
 
     @GetMapping("/statuses")
