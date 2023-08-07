@@ -17,7 +17,6 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Accessors(chain = true)
 @Table(name = GoLoginProfile.COLLECTION_NAME)
 @FieldNameConstants
