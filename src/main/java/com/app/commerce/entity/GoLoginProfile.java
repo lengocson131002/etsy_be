@@ -53,4 +53,12 @@ public class GoLoginProfile {
     private Boolean isTooManyRequest;
 
     private Boolean isEmpty;
+
+    public GoLoginProfile() {
+        isLogOut = false;
+        isDeleted = false;
+        isEmpty = false;
+        isFailedProxy = false;
+        isTooManyRequest = false;
+    }
 }

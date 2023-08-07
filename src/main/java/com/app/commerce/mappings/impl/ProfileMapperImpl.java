@@ -99,22 +99,22 @@ public class ProfileMapperImpl implements ProfileMapper {
 
     private List<String> getStatus(GoLoginProfile profile) {
         List<String> statuses = new ArrayList<>();
-        if (profile.getIsLogOut()) {
+        if (profile.getIsLogOut() != null && profile.getIsLogOut()) {
             statuses.add("Logout");
         }
-        if (profile.getIsDeleted()) {
+        if (profile.getIsDeleted() != null && profile.getIsDeleted()) {
             statuses.add("Deleted");
         }
 
-        if (profile.getIsEmpty()) {
+        if (profile.getIsEmpty() != null && profile.getIsEmpty()) {
             statuses.add("Empty");
         }
 
-        if (profile.getIsFailedProxy()) {
+        if (profile.getIsFailedProxy() != null && profile.getIsFailedProxy()) {
             statuses.add("Failed proxy");
         }
 
-        if (profile.getIsTooManyRequest()) {
+        if (profile.getIsTooManyRequest() != null &&profile.getIsTooManyRequest()) {
             statuses.add("Too many request");
         }
 
