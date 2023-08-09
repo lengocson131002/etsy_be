@@ -35,9 +35,6 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            root.join(Shop.Fields.trackers, JoinType.LEFT).join(User.Fields.trackings, JoinType.LEFT);
-            criteriaQuery.distinct(true);
-
             if (StringUtils.isNotBlank(status)) {
                 predicates.add(cb.equal(cb.lower(root.get(Shop.Fields.status)), status.trim()));
             }
@@ -63,16 +60,12 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
                 });
             }
 
-            criteriaQuery.distinct(true);
-
             if (StringUtils.isNotBlank(query)) {
                 List<Predicate> queryPredicates = new ArrayList<>();
                 query = query.trim().toLowerCase();
                 queryPredicates.add(cb.like(cb.lower(root.get(Shop.Fields.name)), "%" + query + "%"));
                 predicates.add(cb.or(queryPredicates.toArray(new Predicate[0])));
             }
-
-            criteriaQuery.distinct(true);
 
             return cb.and(predicates.toArray(new Predicate[0]));
 
