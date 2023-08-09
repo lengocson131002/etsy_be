@@ -75,6 +75,7 @@ public class ExcelExporter {
 
     private <T> void fillDataRows(Sheet sheet, List<T> entities, String[] columns) {
         CellStyle dataCellStyle = sheet.getWorkbook().createCellStyle();
+        dataCellStyle.setWrapText(true);
 
         for (int rowIndex = 0; rowIndex < entities.size(); rowIndex++) {
             Row row = sheet.createRow(rowIndex + 1);

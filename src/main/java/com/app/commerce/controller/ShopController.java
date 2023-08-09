@@ -57,10 +57,11 @@ public class ShopController {
     @GetMapping("")
     @SecurityRequirement(name = OpenApiConfig.BEARER_SCHEME)
     public ResponseEntity<PageResponse<Shop, ShopResponse>> getAllShops(@ParameterObject GetAllShopRequest request) {
-        if (!authenticationService.isAdmin()) {
-            User loggedUser = authenticationService.getCurrentAuthenticatedAccount()
-                    .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
+        User loggedUser = authenticationService
+                .getCurrentAuthenticatedAccount()
+                .orElseThrow(() -> new ApiException(ResponseCode.UNAUTHORIZED));
 
+        if (!authenticationService.isAdmin()) {
             if (loggedUser.getTeams() == null || loggedUser.getTeams().isEmpty()) {
                 return ResponseEntity.ok(new PageResponse<>());
             }
@@ -69,6 +70,10 @@ public class ShopController {
                     .stream()
                     .map(Team::getId)
                     .collect(Collectors.toList()));
+        }
+
+        if (request.getTracked() != null) {
+            request.setTrackerId(loggedUser.getId());
         }
 
         if (StringUtils.isBlank(request.getSortBy())) {

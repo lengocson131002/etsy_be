@@ -9,4 +9,6 @@ public class BaseConstants {
     public static final String DATE_FORMAT = "dd/MM/yyyy";
 
     public static final String DATE_TIME_FORMAT = "dd/MM/yy HH:mm:ss";
+
+    public static final String DEFAULT_TIMEZONE = "Asia/Bangkok";
 }

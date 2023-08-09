@@ -96,17 +96,32 @@ public class OrderController {
         Map<String, String> columnHeaders = new LinkedHashMap<>();
         columnHeaders.put("no", "N.o");
         columnHeaders.put("etsyOrderId", "Etsy order ID");
+        columnHeaders.put("currency", "Currency");
+        columnHeaders.put("shop", "Shop");
         columnHeaders.put("orderTime", "Order time");
         columnHeaders.put("progressStep", "Progress step");
-        columnHeaders.put("buyerName", "Buyer Name");
-        columnHeaders.put("buyerEmail", "Buyer Email");
+        columnHeaders.put("orderName", "Order Name");
+        columnHeaders.put("orderEmail", "Order Email");
+        columnHeaders.put("shippingCustomerName", "Shipping customer name");
+        columnHeaders.put("shippingPrice", "Shipping price");
+        columnHeaders.put("shippingAddress", "Shipping address");
+        columnHeaders.put("shippingBy", "Shipping by");
+        columnHeaders.put("shippingCareer", "Shipping career");
+        columnHeaders.put("estimateDelivery", "Estimate delivery");
         columnHeaders.put("itemCount", "Item count");
-        columnHeaders.put("total", "Total");
+        columnHeaders.put("itemTotal", "Item total");
+        columnHeaders.put("couponCode", "Coupon code");
+        columnHeaders.put("couponRate", "Coupon rate");
+        columnHeaders.put("couponValue", "Coupon value");
+        columnHeaders.put("subTotal", "Sub total");
         columnHeaders.put("tax", "Tax");
-        columnHeaders.put("currency", "Currency");
+        columnHeaders.put("orderTotal", "Order total");
+        columnHeaders.put("adjustedTotal", "Adjusted total");
+        columnHeaders.put("trackingNumber", "Tracking number");
+        columnHeaders.put("markAsGift", "Mark as gift");
 
-        String fileName = String.format("list-orders-%s-%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT),
-                        DateTime.toString(request.getTo(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_FORMAT));
+        String fileName = String.format("list_orders_%s_%s.xlsx", DateTime.toString(request.getFrom(),  TimeZone.getTimeZone(BaseConstants.DEFAULT_TIMEZONE), BaseConstants.DATE_FORMAT),
+                        DateTime.toString(request.getTo(), TimeZone.getTimeZone(BaseConstants.DEFAULT_TIMEZONE), BaseConstants.DATE_FORMAT));
         ByteArrayResource byteArrayResource = new ByteArrayResource(excelExporter.exportToExcel(orderExcels,columnHeaders).readAllBytes());
 
         HttpHeaders header = new HttpHeaders();

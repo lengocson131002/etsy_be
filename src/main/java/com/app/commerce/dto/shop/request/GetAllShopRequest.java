@@ -24,23 +24,40 @@ public class GetAllShopRequest extends BasePageFilterRequest<Shop> {
 
     private String status;
 
+    private Boolean tracked;
+
     private Long trackerId;
 
     private List<Long> teamIds;
 
     private List<Long> exceptTeamIds;
 
+
     @Override
     public Specification<Shop> getSpecification() {
         return (root, criteriaQuery, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
+
             if (StringUtils.isNotBlank(status)) {
                 predicates.add(cb.equal(cb.lower(root.get(Shop.Fields.status)), status.trim()));
             }
 
-            if (trackerId != null) {
+            if (trackerId != null && tracked != false) {
                 predicates.add(cb.equal(root.join(Shop.Fields.trackers).get(User.Fields.id), trackerId));
+            }
+            if (tracked != null && trackerId != null) {
+                if (tracked) {
+                } else {
+                    Subquery<Long> subquery = criteriaQuery.subquery(Long.class);
+                    Root<Shop> subqueryRoot = subquery.from(Shop.class);
+                    subquery.select(subqueryRoot.get(Shop.Fields.id));
+                    subquery.where(cb.and(
+                            cb.equal(subqueryRoot.join(Shop.Fields.trackers).get(User.Fields.id), trackerId),
+                            cb.equal(subqueryRoot.get(Shop.Fields.id), root.get(Shop.Fields.id))
+                    ));
+                    predicates.add(cb.not(cb.exists(subquery)));
+                }
             }
 
             if (teamIds != null) {

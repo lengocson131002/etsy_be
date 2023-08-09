@@ -1,14 +1,20 @@
 package com.app.commerce.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -68,7 +74,7 @@ public class User extends BaseEntity implements UserDetails {
             t.getStaffs().removeIf(staff -> Objects.equals(staff.getId(), this.getId()));
         }
 
-        for (Shop shop: trackings) {
+        for (Shop shop : trackings) {
             shop.getTrackers().removeIf(tracker -> Objects.equals(tracker.getId(), this.getId()));
         }
     }
@@ -101,5 +107,20 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public User setTeams(Set<Team> updatedTeams) {
+        if (this.trackings == null) {
+            this.trackings = new HashSet<>();
+        }
+
+        this.teams = updatedTeams;
+        for (Shop shop: this.trackings) {
+            if (shop.getTeams().stream().noneMatch(team -> updatedTeams.stream().anyMatch(te -> Objects.equals(te.getId(), team.getId())))) {
+                shop.getTrackers().remove(this);
+            }
+        }
+
+        return this;
     }
 }

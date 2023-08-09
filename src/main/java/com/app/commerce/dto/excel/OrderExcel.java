@@ -19,29 +19,58 @@ import java.util.TimeZone;
 @Accessors(chain = true)
 public class OrderExcel {
     private int no;
-    private String image;
     private String shop;
-    private String orderTime;
-    private String progressStep;
-    private String buyerName;
-    private String buyerEmail;
-    private Integer itemCount;
-    private BigDecimal total;
-    private BigDecimal tax;
-    private String etsyOrderId;
     private String currency;
+    private String etsyOrderId;
+    private String progressStep;
+    private Integer itemCount;
+    private BigDecimal itemTotal;
+    private Double couponRate;
+    private BigDecimal couponValue;
+    private String couponCode;
+    private BigDecimal subTotal;
+    private BigDecimal orderTotal;
+    private BigDecimal adjustedTotal;
+    private BigDecimal tax;
+    private String orderName;
+    private String orderEmail;
+    private String orderTime;
+    private String shippingCustomerName;
+    private BigDecimal shippingPrice;
+    private String shippingAddress;
+    private String shippingBy;
+    private String shippingCareer;
+    private String estimateDelivery;
+    private String trackingNumber;
+    private Boolean markAsGift;
+
     public OrderExcel(int index, Order order) {
         no = index;
-        image = order.getImage();
         shop = order.getShop().getName();
-        orderTime = DateTime.toString(order.getOrderTime(), TimeZone.getTimeZone("Asia/Bangkok"), BaseConstants.DATE_TIME_FORMAT);
+        orderTime = DateTime.toString(order.getOrderTime(), TimeZone.getTimeZone(BaseConstants.DEFAULT_TIMEZONE), BaseConstants.DATE_TIME_FORMAT);
         progressStep = order.getProgressStep();
-        buyerName = order.getOrderName();
-        buyerEmail = order.getOrderEmail();
+        orderName = order.getOrderName();
+        orderEmail = order.getOrderEmail();
         itemCount = order.getItemCount();
-        total = order.getOrderTotal();
+        orderTotal = order.getOrderTotal();
         tax = order.getTax();
         etsyOrderId = order.getEtsyOrderId();
-        currency = order.getShop().getCurrencySymbol();
+        currency = String.format("%s(%s)", order.getShop().getCurrencyCode(), order.getShop().getCurrencyCode());
+        itemTotal = order.getItemTotal();
+        couponRate = order.getCouponRate();
+        couponCode = order.getCouponCode();
+        subTotal = order.getSubTotal();
+        markAsGift = order.getMarkAsGift();
+        trackingNumber = order.getTrackingNumber();
+        estimateDelivery = order.getEstimateDelivery();
+        shippingCareer = order.getShippingCareer();
+        shippingAddress = order.getShippingAddress() != null
+                ? order.getShippingAddress().replaceAll("\n+", ", ")
+                : "";
+        shippingCustomerName = order.getShippingCustomerName();
+        shippingBy = order.getShippingBy();
+        shippingPrice = order.getShippingPrice();
+        adjustedTotal = order.getAdjustedTotal();
+        couponValue = order.getCouponValue();
     }
 }

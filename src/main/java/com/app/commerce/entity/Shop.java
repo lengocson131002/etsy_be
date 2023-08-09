@@ -207,6 +207,17 @@ public class Shop extends BaseEntity {
         if (this.getTrackers().isEmpty()) {
             this.setTracked(false);
         }
+    }
 
+    public Shop setTeams(Set<Team> updatedTeams) {
+        if (this.trackers == null) {
+            this.trackers = new HashSet<>();
+        }
+
+        this.teams = updatedTeams;
+        this.trackers.removeIf(tracker
+                -> tracker.getTeams().stream().noneMatch(team -> updatedTeams.stream().anyMatch(te -> Objects.equals(te.getId(), team.getId()))));
+
+        return this;
     }
 }
