@@ -44,6 +44,7 @@ public class GetAllOrdersRequest extends BasePageFilterRequest<Order> {
                 String queryPattern = "%" + query.trim().toLowerCase() + "%";
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.etsyOrderId)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.orderName)), queryPattern));
+                queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.orderEmail)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingAddress)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.get(Order.Fields.shippingCustomerName)), queryPattern));
                 queryPredicates.add(cb.like(cb.lower(root.join(Order.Fields.shop).get(Shop.Fields.id)), queryPattern));

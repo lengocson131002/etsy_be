@@ -96,8 +96,8 @@ public class OrderController {
         Map<String, String> columnHeaders = new LinkedHashMap<>();
         columnHeaders.put("no", "N.o");
         columnHeaders.put("etsyOrderId", "Etsy order ID");
-        columnHeaders.put("currency", "Currency");
         columnHeaders.put("shop", "Shop");
+        columnHeaders.put("currency", "Currency");
         columnHeaders.put("orderTime", "Order time");
         columnHeaders.put("progressStep", "Progress step");
         columnHeaders.put("orderName", "Order Name");
