@@ -60,6 +60,7 @@ public class GetAllStaffRequest extends BasePageFilterRequest<User> {
             List<Predicate> queryPredicates = new ArrayList<>();
             if (StringUtils.isNotBlank(query)) {
                 query = query.trim().toLowerCase();
+                queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.staffId)), "%" + query + "%"));
                 queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.username)), "%" + query + "%"));
                 queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.fullName)), "%" + query + "%"));
                 queryPredicates.add(cb.like(cb.lower(root.get(User.Fields.phoneNumber)), "%" + query + "%"));
